@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080d1b">
+    <meta name="description" content="A standalone retro arcade shooter. Defend Earth against endless waves of space invaders.">
+    <title>Space Invaders · Orbital Defense</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23080d1b' d='M0 0h32v32H0z'/%3E%3Cpath fill='%2379ffbc' d='M14 6h4v8h4v6h6v8H4v-8h6v-6h4z'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="../../assets/navigation.css">
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
+    <main>
+      <header class="masthead">
+        <div>
+          <p class="eyebrow">Earth defense division / Sector 07</p>
+          <h1>SPACE <span>INVADERS</span></h1>
+        </div>
+        <span class="badge">ARCADE / 01</span>
+      </header>
+
+      <section class="arcade" aria-label="Space Invaders game">
+        <dl class="scoreboard" aria-label="Game statistics">
+          <div><dt>Score</dt><dd id="score">000000</dd></div>
+          <div><dt>Wave</dt><dd id="wave">01</dd></div>
+          <div><dt>Lives</dt><dd id="lives">3</dd></div>
+        </dl>
+        <div class="stage">
+          <canvas id="game" width="800" height="600" tabindex="0" aria-label="Space Invaders playfield" aria-describedby="instructions">
+            This game needs a browser with canvas support. Use the controls below to start or pause.
+          </canvas>
+          <div id="overlay" class="overlay">
+            <p class="eyebrow" id="overlay-label">Incoming transmission</p>
+            <h2 id="overlay-title">DEFEND THE EARTH</h2>
+            <p id="overlay-detail">Move. Aim. Hold fire. Don't let them land.</p>
+            <p class="overlay-hint">Use the game controls below</p>
+          </div>
+        </div>
+        <div class="toolbar">
+          <button id="toggle" class="primary" type="button">Start game</button>
+          <button id="restart" type="button">Restart</button>
+          <span id="mode" class="mode">Awaiting pilot</span>
+        </div>
+        <div class="touch-controls" aria-label="Touch and mouse game controls">
+          <button type="button" data-control="left" aria-label="Move left">◀ <span>Left</span></button>
+          <button type="button" data-control="right" aria-label="Move right">▶ <span>Right</span></button>
+          <button type="button" data-control="fire" class="fire" aria-label="Fire">● <span>Fire</span></button>
+        </div>
+      </section>
+
+      <section class="briefing" id="instructions" aria-labelledby="briefing-title">
+        <h2 id="briefing-title">Pilot briefing</h2>
+        <div class="instructions-grid">
+          <p><kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> <span>Move ship</span></p>
+          <p><kbd>Space</kbd> <span>Hold to fire</span></p>
+          <p><kbd>P</kbd> / <kbd>Esc</kbd> <span>Pause / resume</span></p>
+          <p><kbd>R</kbd> <span>Restart game</span></p>
+        </div>
+        <p class="mission">Clear each formation to advance. Higher waves move and fire faster. You have three lives; enemy fire costs a life, but an invasion reaching your ship ends the game. The game pauses when you leave the tab. On touch screens, hold the movement and fire buttons together.</p>
+      </section>
+      <p id="announcement" class="sr-only" role="status" aria-live="polite" aria-atomic="true">Ready. Press Start game to play.</p>
+      <noscript><p class="notice">JavaScript is required to play this game. Enable it and reload the page.</p></noscript>
+      <footer>NO DOWNLOADS. NO TRACKING. JUST ONE MORE WAVE.</footer>
+    </main>
+  </body>
+</html>

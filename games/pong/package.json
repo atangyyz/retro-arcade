@@ -1,0 +1,11 @@
+{
+  "name": "retro-pong",
+  "version": "1.0.0",
+  "description": "A standalone retro-style Pong game playable in the browser.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "UNLICENSED"
+}

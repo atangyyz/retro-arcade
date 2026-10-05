@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101823">
+  <title>Retro Frogger — River Run</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="../../assets/navigation.css">
+  <script type="module" src="./main.js"></script>
+</head>
+<body>
+  <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
+  <main class="arcade">
+    <header>
+      <p class="eyebrow">THE POCKET ARCADE / 01</p>
+      <h1>RIVER<span>RUN</span></h1>
+      <p class="subtitle">A retro Frogger-style crossing game</p>
+    </header>
+    <section class="cabinet" aria-label="Game">
+      <dl class="scoreboard">
+        <div><dt>Score</dt><dd id="score">00000</dd></div>
+        <div><dt>Lives</dt><dd id="lives">3</dd></div>
+        <div><dt>Level</dt><dd id="level">1</dd></div>
+        <div><dt>Time</dt><dd id="time">35</dd></div>
+      </dl>
+      <div class="screen">
+        <canvas id="board" width="528" height="624" tabindex="0" aria-label="River Run game board" aria-describedby="instructions status">
+          This game requires a browser with HTML canvas support. Controls and instructions are below.
+        </canvas>
+        <div id="overlay" class="overlay">
+          <p class="eyebrow">DODGE. HOP. REPEAT.</p>
+          <h2 id="overlay-title">Take the leap.</h2>
+          <p id="overlay-copy">Five lily pads. Three lives.<br>One very busy crossing.</p>
+          <button id="start" type="button">Start game</button>
+        </div>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Ready to cross. Select Start game.</p>
+      <div class="actions">
+        <button id="pause" type="button" disabled>Pause <kbd>P</kbd></button>
+        <button id="restart" type="button">Restart <kbd>R</kbd></button>
+      </div>
+    </section>
+    <nav class="dpad" aria-label="Directional controls">
+      <button class="up" type="button" data-direction="up" aria-label="Hop up">▲</button>
+      <button class="left" type="button" data-direction="left" aria-label="Hop left">◀</button>
+      <button class="down" type="button" data-direction="down" aria-label="Hop down">▼</button>
+      <button class="right" type="button" data-direction="right" aria-label="Hop right">▶</button>
+    </nav>
+    <section id="instructions" class="instructions" aria-labelledby="how-to">
+      <h2 id="how-to">HOW TO CROSS</h2>
+      <p><strong>Arrow keys / WASD</strong> to hop, or use the direction buttons. <strong>P / Escape</strong> pauses; <strong>R</strong> restarts. Keyboard controls work while the game board is focused.</p>
+      <ul>
+        <li>Dodge traffic, then ride the logs across the river. Water is not safe!</li>
+        <li>Land in the center of an empty lily pad at the top. Fill all five to advance.</li>
+        <li>Each crossing has a time limit. Cars, water, occupied pads, and running out of time cost a life.</li>
+      </ul>
+      <p class="tip">Every new level is faster. The game pauses when you leave the tab.</p>
+    </section>
+    <footer>NO DOWNLOADS. NO COINS. JUST ONE MORE HOP.</footer>
+  </main>
+</body>
+</html>

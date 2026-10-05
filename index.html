@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1019">
+  <meta name="description" content="Four arcade classics. Play Pong, Frogger, Space Invaders, and Asteroids right in your browser. No downloads, no quarters.">
+  <title>Retro Arcade — Choose your game</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1019'/%3E%3Cpath d='M8 8h6v6H8zm10 0h6v6h-6zM8 18h6v6H8zm10 0h6v6h-6z' fill='%2391f3cf'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./assets/arcade.css">
+</head>
+<body>
+  <a class="skip-link" href="#games">Skip to games</a>
+  <header class="masthead">
+    <a class="brand" href="./index.html"><span aria-hidden="true">▦</span> RETRO ARCADE</a>
+    <span class="status"><span aria-hidden="true">●</span> ALL SYSTEMS READY</span>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="welcome">
+      <p class="eyebrow">THE CLASSICS NEVER GET OLD</p>
+      <h1 id="welcome">Small pixels.<br><span>Big adventures.</span></h1>
+      <p class="lede">Your next high score starts here. Four arcade classics, ready to play in your browser. No downloads. No quarters.</p>
+      <a class="choose-link" href="#games">Choose your game <span aria-hidden="true">↓</span></a>
+    </section>
+    <section id="games" class="games" aria-labelledby="games-heading" tabindex="-1">
+      <div class="section-heading">
+        <h2 id="games-heading">SELECT A GAME</h2>
+        <span>04 CLASSICS / FREE PLAY</span>
+      </div>
+      <div class="game-grid">
+        <a class="game-card pong" href="./games/pong/index.html" aria-labelledby="pong-title pong-play" aria-describedby="pong-description pong-controls">
+          <div class="preview" aria-hidden="true">
+            <svg viewBox="0 0 320 180"><path class="dim" d="M160 12v156" stroke-dasharray="7 9"/><path d="M49 56v58M271 85v58"/><path class="trail" d="M172 76l-26 12"/><rect x="180" y="67" width="10" height="10"/></svg>
+            <span class="game-number">01 / COURT CLASSIC</span>
+          </div>
+          <div class="card-content">
+            <h3 id="pong-title">Pong</h3>
+            <p id="pong-description">The original rivalry. Trade volleys against the CPU or challenge a friend.</p>
+            <p class="controls" id="pong-controls">W / S + ↑ / ↓ · 1–2 players · Touch</p>
+            <span class="play" id="pong-play">Play Pong <span aria-hidden="true">↗</span></span>
+          </div>
+        </a>
+        <a class="game-card frogger" href="./games/frogger/index.html" aria-labelledby="frogger-title frogger-play" aria-describedby="frogger-description frogger-controls">
+          <div class="preview" aria-hidden="true">
+            <svg viewBox="0 0 320 180"><path class="dim" d="M20 56h280M20 125h280" stroke-dasharray="12 10"/><path class="log" d="M35 27h72M183 27h92"/><rect class="car" x="48" y="76" width="45" height="22"/><rect class="car" x="224" y="76" width="45" height="22"/><path class="frog" d="M145 139h8v-8h14v8h8v23h-8v-8h-14v8h-8z"/></svg>
+            <span class="game-number">02 / ONE HOP AT A TIME</span>
+          </div>
+          <div class="card-content">
+            <h3 id="frogger-title">Frogger</h3>
+            <p id="frogger-description">Dodge traffic, ride the logs, and find your way home. Timing is everything.</p>
+            <p class="controls" id="frogger-controls">Arrow keys / WASD · 1 player · Touch</p>
+            <span class="play" id="frogger-play">Play Frogger <span aria-hidden="true">↗</span></span>
+          </div>
+        </a>
+        <a class="game-card invaders" href="./games/space-invaders/index.html" aria-labelledby="invaders-title invaders-play" aria-describedby="invaders-description invaders-controls">
+          <div class="preview" aria-hidden="true">
+            <svg viewBox="0 0 320 180"><defs><path id="alien" d="M-14-8h7v-7h4v7h6v-7h4v7h7v7h7v15h-7V7H10v7H5V7H-5v7h-5V7h-4v7h-7V-1h7z"/></defs><use href="#alien" x="75" y="41"/><use href="#alien" x="160" y="41"/><use href="#alien" x="245" y="41"/><use class="dim" href="#alien" x="117" y="84"/><use class="dim" href="#alien" x="202" y="84"/><path class="shot" d="M160 110v-12"/><path d="M138 158v-12h15v-12h14v12h15v12z"/></svg>
+            <span class="game-number">03 / DEFEND THE PLANET</span>
+          </div>
+          <div class="card-content">
+            <h3 id="invaders-title">Space Invaders</h3>
+            <p id="invaders-description">Hold the line against an alien armada. Keep moving, keep firing, stay alive.</p>
+            <p class="controls" id="invaders-controls">← / → or A / D + Space · Touch</p>
+            <span class="play" id="invaders-play">Play Space Invaders <span aria-hidden="true">↗</span></span>
+          </div>
+        </a>
+        <a class="game-card asteroids" href="./games/asteroids/index.html" aria-labelledby="asteroids-title asteroids-play" aria-describedby="asteroids-description asteroids-controls">
+          <div class="preview" aria-hidden="true">
+            <svg viewBox="0 0 320 180"><path class="rock" d="M37 48l18-21 24 6 18 22-10 22-27 7-26-16zM224 97l21-11 22 9 9 24-15 17-27-3-13-19zM242 29l12-10 15 7-4 17-16 3z"/><path class="ship" d="M158 64l-15 45 15-8 15 8z"/><path class="trail" d="M153 112l5 17 5-17"/><path class="shot" d="M158 43v-7M158 22v-7"/></svg>
+            <span class="game-number">04 / LOST IN SPACE</span>
+          </div>
+          <div class="card-content">
+            <h3 id="asteroids-title">Asteroids</h3>
+            <p id="asteroids-description">Thrust, turn, and blast through a drifting asteroid field. Make every shot count.</p>
+            <p class="controls" id="asteroids-controls">Arrow keys / WASD + Space · Touch</p>
+            <span class="play" id="asteroids-play">Play Asteroids <span aria-hidden="true">↗</span></span>
+          </div>
+        </a>
+      </div>
+    </section>
+    <aside class="player-note" aria-label="How to play">
+      <span aria-hidden="true">⌨</span>
+      <p><strong>Pick up and play.</strong> Each game includes its own controls and on-screen buttons. Use Tab to explore and Enter to select. Your browser is the arcade.</p>
+    </aside>
+  </main>
+  <footer><span>RETRO ARCADE</span><span>FOUR GAMES. ENDLESS “ONE MORE TRY.”</span></footer>
+</body>
+</html>

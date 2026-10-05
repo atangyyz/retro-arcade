@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a1118">
+  <title>Retro Pong — The original rivalry</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="../../assets/navigation.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
+  <main>
+    <header>
+      <p class="eyebrow"><span class="lamp"></span> THE LIVING ROOM ARCADE / 001</p>
+      <h1>RETRO<span>PONG</span><span class="title-dot">.</span></h1>
+      <p class="subtitle">Two paddles. One ball. A timeless rivalry.</p>
+    </header>
+
+    <section class="machine" aria-label="Pong game">
+      <div class="machine-top">
+        <label for="mode">GAME MODE
+          <select id="mode">
+            <option value="solo">One player · vs CPU</option>
+            <option value="duo">Two players · local</option>
+          </select>
+        </label>
+        <span class="rule">FIRST TO <strong>7</strong> WINS</span>
+      </div>
+      <div class="scoreboard" aria-label="Score">
+        <div class="player left-player"><span>PLAYER 01</span><strong id="left-score">00</strong></div>
+        <div class="score-center"><span>MATCH POINT</span><span class="versus">VS</span></div>
+        <div class="player right-player"><span id="right-name">CPU</span><strong id="right-score">00</strong></div>
+      </div>
+      <div class="court" id="court" tabindex="0" role="group" aria-label="Pong court" aria-describedby="instructions">
+        <canvas id="game" width="960" height="540" aria-label="Pong playing field. Scores and match status are displayed outside the canvas."></canvas>
+        <div class="overlay" id="overlay">
+          <p class="eyebrow" id="overlay-kicker">READY WHEN YOU ARE</p>
+          <h2 id="overlay-title">LET'S PLAY.</h2>
+          <p id="overlay-text">Take the left paddle. Outplay the machine.</p>
+          <button id="play" class="primary" type="button">Start match <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+      <div class="machine-bottom">
+        <p id="status" role="status" aria-live="polite" aria-atomic="true">Ready · Choose your mode and start a match.</p>
+        <div class="actions">
+          <button id="pause" type="button" disabled>Pause <kbd>P</kbd></button>
+          <button id="restart" type="button">Restart <kbd>R</kbd></button>
+        </div>
+      </div>
+      <div class="touch-controls" aria-label="Touch paddle controls">
+        <div><button type="button" data-control="w" aria-label="Move left paddle up">P1 ▲</button><button type="button" data-control="s" aria-label="Move left paddle down">P1 ▼</button></div>
+        <div><button type="button" data-control="arrowup" aria-label="Move right paddle up" disabled>P2 ▲</button><button type="button" data-control="arrowdown" aria-label="Move right paddle down" disabled>P2 ▼</button></div>
+      </div>
+    </section>
+
+    <section class="instructions" id="instructions" aria-label="How to play">
+      <div><span class="instruction-number">01 / MOVE</span><h2>Own your side.</h2><p>Left paddle: <kbd>W</kbd> / <kbd>S</kbd><br>Right paddle: <kbd>↑</kbd> / <kbd>↓</kbd> in two-player mode.</p></div>
+      <div><span class="instruction-number">02 / RALLY</span><h2>Find your angle.</h2><p>Hit near a paddle's edge to angle your shot. Each return makes the ball faster.</p></div>
+      <div><span class="instruction-number">03 / RESET</span><h2>Keep it friendly.</h2><p><kbd>Space</kbd> starts or pauses · <kbd>P</kbd> pauses · <kbd>R</kbd> resets. Touch buttons work too.</p></div>
+    </section>
+    <footer><span>BUILT FOR THE RALLY.</span><span>NO DOWNLOADS. JUST PLAY.</span></footer>
+    <noscript>This game needs JavaScript enabled to play.</noscript>
+  </main>
+</body>
+</html>

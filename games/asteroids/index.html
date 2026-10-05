@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#080e18">
+    <meta name="description" content="A free, standalone retro Asteroids arcade game. Pilot, blast, survive, and beat your personal best.">
+    <title>Asteroids — Orbit Arcade</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="../../assets/navigation.css">
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body>
+    <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
+    <main class="arcade">
+      <header class="masthead">
+        <a class="brand" href="../../index.html" aria-label="Retro Arcade home"><span class="brand-icon" aria-hidden="true">✳</span> ORBIT<span class="brand-light">/ ARCADE</span></a>
+        <span class="edition">NO. 001 <span>•</span> THE CLASSICS</span>
+      </header>
+
+      <section class="game-heading" aria-labelledby="game-title">
+        <div><p class="eyebrow"><span class="signal-dot"></span> DEEP SPACE. PURE ARCADE.</p><h1 id="game-title">ASTEROIDS<span class="title-dot">.</span></h1></div>
+        <p class="tagline">One ship. An endless sky.<br>How long can you last?</p>
+      </section>
+
+      <section class="cabinet" aria-label="Asteroids game">
+        <div class="instrument-panel">
+          <div class="readout"><span class="readout-label">SCORE</span><strong id="score">000000</strong></div>
+          <div class="readout best"><span class="readout-label">PERSONAL BEST</span><strong id="high-score">000000</strong></div>
+          <div class="readout"><span class="readout-label">WAVE</span><strong id="wave">01</strong></div>
+          <div class="readout lives-readout"><span class="readout-label">LIVES</span><strong id="lives" aria-label="3 lives">△ △ △</strong></div>
+        </div>
+
+        <div class="screen">
+          <canvas id="game" width="1000" height="700" tabindex="0" aria-label="Asteroids playfield" aria-describedby="instructions">Your browser needs canvas support to play Asteroids.</canvas>
+          <div class="screen-vignette" aria-hidden="true"></div>
+          <div id="overlay" class="overlay">
+            <div class="overlay-card">
+              <div class="ship-emblem" aria-hidden="true">
+                <svg viewBox="0 0 80 80"><path d="M40 10 63 65 40 53 17 65Z"/><path class="exhaust" d="m32 63 8 12 8-12"/></svg>
+              </div>
+              <p id="overlay-kicker" class="eyebrow">YOUR NEXT HIGH SCORE STARTS HERE</p>
+              <h2 id="overlay-title">Into the unknown.</h2>
+              <p id="overlay-description">Dodge the rocks. Trust your thrusters.<br>Leave nothing but stardust.</p>
+              <button id="start-button" class="primary-button" type="button">LAUNCH GAME <span aria-hidden="true">↗</span></button>
+              <p id="overlay-hint" class="overlay-hint">or press <kbd>SPACE</kbd> to launch</p>
+            </div>
+          </div>
+          <div id="wave-banner" class="wave-banner" aria-hidden="true" hidden></div>
+          <span class="screen-coordinate" aria-hidden="true">SECTOR 00:01 / OPEN SPACE</span>
+        </div>
+
+        <div class="cabinet-footer">
+          <span><span class="signal-dot"></span> <span id="flight-status">AWAITING PILOT</span></span>
+          <div class="utility-buttons">
+            <button id="sound-button" type="button" aria-pressed="false">SOUND OFF</button>
+            <button id="pause-button" type="button" disabled>PAUSE <span aria-hidden="true">Ⅱ</span></button>
+          </div>
+        </div>
+      </section>
+
+      <div class="touch-controls" aria-label="Touch flight controls">
+        <div class="touch-group">
+          <button type="button" data-control="left" aria-label="Rotate left">↶</button>
+          <button type="button" data-control="right" aria-label="Rotate right">↷</button>
+        </div>
+        <div class="touch-group">
+          <button type="button" data-control="thrust" aria-label="Thrust forward">THRUST ↑</button>
+          <button type="button" data-control="fire" class="touch-fire" aria-label="Fire lasers">FIRE ◇</button>
+        </div>
+      </div>
+
+      <section id="instructions" class="instructions" aria-label="How to play">
+        <div class="instruction-heading"><h2>FLIGHT MANUAL</h2><p>Easy to learn. Hard to leave.</p></div>
+        <div class="control"><div><kbd>←</kbd> <kbd>→</kbd><span class="key-alternative"> / A D</span></div><span>Rotate</span></div>
+        <div class="control"><div><kbd>↑</kbd><span class="key-alternative"> / W</span></div><span>Thrust</span></div>
+        <div class="control"><div><kbd>SPACE</kbd></div><span>Fire · hold to repeat</span></div>
+        <div class="control"><div><kbd>ESC</kbd><span class="key-alternative"> / P</span></div><span>Pause</span></div>
+      </section>
+      <p class="game-tip">The universe wraps around. Big rocks split into smaller ones. Clear a wave to advance.<br>Three lives, no brakes — release thrust to coast. On mobile, hold the flight buttons below the screen.</p>
+      <footer class="page-footer"><span>BUILT FOR THE LOVE OF THE GAME</span><span>NO DOWNLOADS. JUST ONE MORE ROUND.</span></footer>
+      <p id="announcer" class="sr-only" role="status" aria-live="polite"></p>
+    </main>
+  </body>
+</html>

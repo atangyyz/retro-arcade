@@ -1,0 +1,16 @@
+{
+  "name": "retro-space-invaders",
+  "version": "1.0.0",
+  "description": "A standalone retro-style Space Invaders game playable in the browser.",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atangyyz/retro-space-invaders"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED"
+}
