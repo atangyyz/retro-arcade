@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
-const games = ['pong', 'frogger', 'space-invaders', 'asteroids', 'snake'];
+const games = ['pong', 'frogger', 'space-invaders', 'asteroids', 'snake', 'gauntlet'];
 const read = path => readFile(new URL(path, root), 'utf8');
 
 test('homepage offers exactly one same-tab link to each playable game', async () => {
@@ -63,12 +63,12 @@ test('shared styles retain visible focus and reduced-motion support', async () =
   assert.match(homepage, /transition:\s*none/);
 });
 
-test('homepage copy reflects all five games and includes an inline Snake preview', async () => {
+test('homepage copy reflects all six games and includes inline game previews', async () => {
   const html = await read('index.html');
-  assert.match(html, /Five arcade classics/);
-  assert.match(html, /05 CLASSICS \/ FREE PLAY/);
-  assert.match(html, /FIVE GAMES\./);
-  assert.doesNotMatch(html, /four (?:arcade classics|games)/i);
+  assert.match(html, /Six arcade classics/);
+  assert.match(html, /06 CLASSICS \/ FREE PLAY/);
+  assert.match(html, /SIX GAMES\./);
+  assert.doesNotMatch(html, /five (?:arcade classics|games)/i);
   const grid = html.match(/<div class="game-grid">([\s\S]*?)<\/section>/);
   assert.ok(grid);
   assert.equal([...grid[1].matchAll(/class="game-card /g)].length, games.length);
@@ -77,6 +77,11 @@ test('homepage copy reflects all five games and includes an inline Snake preview
   assert.match(card[0], /<svg viewBox=/);
   assert.match(card[0], /id="snake-description"/);
   assert.match(card[0], /id="snake-controls"/);
+  const gauntlet = grid[1].match(/<a class="game-card gauntlet"[\s\S]*?<\/a>/);
+  assert.ok(gauntlet);
+  assert.match(gauntlet[0], /<svg viewBox=/);
+  assert.match(gauntlet[0], /id="gauntlet-description"/);
+  assert.match(gauntlet[0], /id="gauntlet-controls"/);
 });
 
 test('Snake exposes instructions, live status, touch controls and visible focus', async () => {
@@ -101,4 +106,19 @@ test('Snake exposes instructions, live status, touch controls and visible focus'
     assert.ok(resolved.pathname.startsWith('/retro-arcade/games/snake/'));
     await access(new URL(resolved.pathname.slice('/retro-arcade/'.length), root));
   }
+});
+
+test('Gauntlet exposes keyboard instructions, status and touch controls', async () => {
+  const html = await read('games/gauntlet/index.html');
+  const css = await read('games/gauntlet/style.css');
+  assert.match(html, /<canvas[^>]*tabindex="0"[^>]*aria-describedby="instructions status"/);
+  assert.match(html, /id="status"[^>]*role="status"[^>]*aria-live="polite"/);
+  assert.match(html, /id="start"[^>]*>Start run/);
+  assert.match(html, /id="attack"[^>]*>Attack/);
+  for (const direction of ['up', 'down', 'left', 'right']) {
+    assert.match(html, new RegExp(`data-direction="${direction}" aria-label="Move ${direction}"`));
+  }
+  assert.match(css, /button:focus-visible/);
+  assert.match(css, /canvas:focus-visible/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });

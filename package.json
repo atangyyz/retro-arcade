@@ -2,12 +2,12 @@
   "name": "retro-arcade",
   "version": "1.0.0",
   "private": true,
-  "description": "Five standalone browser games in one static arcade.",
+  "description": "Six standalone browser games in one static arcade.",
   "scripts": {
     "start": "python3 -m http.server 8000 --bind 127.0.0.1",
     "test": "npm run test:site && npm run test:games",
     "test:site": "node --test tests/*.test.mjs",
-    "test:games": "npm --prefix games/pong test && npm --prefix games/frogger test && npm --prefix games/space-invaders test && npm --prefix games/asteroids test && npm --prefix games/snake test",
-    "check": "node --check games/pong/app.js && node --check games/pong/game.js && node --check games/frogger/main.js && node --check games/frogger/game.js && node --check games/space-invaders/app.mjs && node --check games/space-invaders/game.mjs && npm --prefix games/asteroids run check && npm --prefix games/snake run check"
+    "test:games": "npm --prefix games/pong test && npm --prefix games/frogger test && npm --prefix games/space-invaders test && npm --prefix games/asteroids test && npm --prefix games/snake test && npm --prefix games/gauntlet test",
+    "check": "node --check games/pong/app.js && node --check games/pong/game.js && node --check games/frogger/main.js && node --check games/frogger/game.js && node --check games/space-invaders/app.mjs && node --check games/space-invaders/game.mjs && npm --prefix games/asteroids run check && npm --prefix games/snake run check && npm --prefix games/gauntlet run check"
   }
 }

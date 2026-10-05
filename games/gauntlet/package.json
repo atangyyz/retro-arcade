@@ -1,0 +1,11 @@
+{
+  "name": "retro-gauntlet",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A dependency-free browser dungeon crawler.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check game.js && node --check main.js"
+  }
+}
