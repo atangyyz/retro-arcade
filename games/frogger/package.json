@@ -1,0 +1,13 @@
+{
+  "name": "retro-frogger",
+  "version": "1.0.0",
+  "description": "A standalone retro-style Frogger game playable in the browser.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
