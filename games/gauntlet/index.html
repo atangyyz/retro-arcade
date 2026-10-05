@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1019">
+  <meta name="description" content="Explore a pixel dungeon, defeat monsters, find the key, and escape in this free browser arcade game.">
+  <title>Gauntlet — Retro Arcade</title>
+  <link rel="stylesheet" href="../../assets/navigation.css">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./main.js"></script>
+</head>
+<body>
+  <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
+  <main class="game">
+    <header class="heading">
+      <div><p class="eyebrow">ENTER THE DUNGEON</p><h1>Gauntlet<span>.</span></h1></div>
+      <div class="readouts" aria-label="Game status">
+        <div><span>Score</span><output id="score">0</output></div>
+        <div><span>Health</span><output id="health" aria-label="5 health">♥ ♥ ♥ ♥ ♥</output></div>
+      </div>
+    </header>
+    <p class="intro">Find the key. Clear a path. Make it out alive.</p>
+    <section class="cabinet" aria-label="Gauntlet dungeon game">
+      <div class="board-wrap">
+        <canvas id="board" width="720" height="528" tabindex="0" aria-label="Dungeon map: explore, fight monsters, find the key and reach the exit" aria-describedby="instructions status">
+          Gauntlet requires browser canvas support. Use the direction and action buttons below to play.
+        </canvas>
+        <div class="overlay" id="overlay">
+          <strong id="overlay-title">The dungeon awaits.</strong>
+          <span id="overlay-hint">Select Start run to begin.</span>
+        </div>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Ready. Select Start run to begin.</p>
+      <div class="actions">
+        <button id="start" type="button">Start run</button>
+        <button id="pause" type="button" disabled>Pause</button>
+        <button id="attack" type="button" aria-label="Melee attack">Attack</button>
+      </div>
+    </section>
+    <section class="controls" id="instructions" aria-label="How to play">
+      <div>
+        <h2>How to survive</h2>
+        <p>Move with <strong>arrow keys</strong> or <strong>WASD</strong>, or use the direction pad. Press <strong>Space</strong> or Attack to strike in the direction you face.</p>
+        <p>Collect treasure for points, potions for health, and the key to open the exit in the lower-right corner. Defeat monsters before they overwhelm you.</p>
+        <p><strong>P</strong> pauses. Leaving the window pauses the run. Clear the dungeon and escape to win.</p>
+      </div>
+      <div class="dpad" role="group" aria-label="Direction controls">
+        <button type="button" data-direction="up" aria-label="Move up">↑</button>
+        <button type="button" data-direction="left" aria-label="Move left">←</button>
+        <button type="button" data-direction="down" aria-label="Move down">↓</button>
+        <button type="button" data-direction="right" aria-label="Move right">→</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
