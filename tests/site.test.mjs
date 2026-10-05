@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
-const games = ['pong', 'frogger', 'space-invaders', 'asteroids'];
+const games = ['pong', 'frogger', 'space-invaders', 'asteroids', 'snake'];
 const read = path => readFile(new URL(path, root), 'utf8');
 
 test('homepage offers exactly one same-tab link to each playable game', async () => {
@@ -61,4 +61,44 @@ test('shared styles retain visible focus and reduced-motion support', async () =
   assert.match(homepage, /prefers-reduced-motion:\s*reduce/);
   assert.match(homepage, /scroll-behavior:\s*auto/);
   assert.match(homepage, /transition:\s*none/);
+});
+
+test('homepage copy reflects all five games and includes an inline Snake preview', async () => {
+  const html = await read('index.html');
+  assert.match(html, /Five arcade classics/);
+  assert.match(html, /05 CLASSICS \/ FREE PLAY/);
+  assert.match(html, /FIVE GAMES\./);
+  assert.doesNotMatch(html, /four (?:arcade classics|games)/i);
+  const grid = html.match(/<div class="game-grid">([\s\S]*?)<\/section>/);
+  assert.ok(grid);
+  assert.equal([...grid[1].matchAll(/class="game-card /g)].length, games.length);
+  const card = grid[1].match(/<a class="game-card snake"[\s\S]*?<\/a>/);
+  assert.ok(card);
+  assert.match(card[0], /<svg viewBox=/);
+  assert.match(card[0], /id="snake-description"/);
+  assert.match(card[0], /id="snake-controls"/);
+});
+
+test('Snake exposes instructions, live status, touch controls and visible focus', async () => {
+  const html = await read('games/snake/index.html');
+  const css = await read('games/snake/style.css');
+  const main = await read('games/snake/main.js');
+  assert.match(html, /<canvas[^>]*tabindex="0"[^>]*aria-describedby="instructions status"/);
+  assert.match(html, /id="status"[^>]*role="status"[^>]*aria-live="polite"/);
+  assert.match(html, /id="instructions"/);
+  assert.match(html, /id="start"[^>]*>Start game/);
+  assert.match(html, /id="pause"[^>]*disabled/);
+  for (const direction of ['up', 'down', 'left', 'right']) {
+    assert.match(html, new RegExp(`data-direction="${direction}" aria-label="Move ${direction}"`));
+  }
+  assert.match(css, /button:focus-visible/);
+  assert.match(css, /canvas:focus-visible/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  const page = new URL('games/snake/main.js', 'https://example.com/retro-arcade/');
+  for (const [, reference] of main.matchAll(/from '([^']+)'/g)) {
+    assert.ok(reference.startsWith('./'));
+    const resolved = new URL(reference, page);
+    assert.ok(resolved.pathname.startsWith('/retro-arcade/games/snake/'));
+    await access(new URL(resolved.pathname.slice('/retro-arcade/'.length), root));
+  }
 });

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1019">
+  <meta name="description" content="Play Snake: eat, grow, and chase a new high score. A free keyboard and touch-friendly arcade game.">
+  <title>Snake — Retro Arcade</title>
+  <link rel="stylesheet" href="../../assets/navigation.css">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./main.js"></script>
+</head>
+<body>
+  <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
+  <main>
+    <header class="heading">
+      <div>
+        <p class="eyebrow">ONE MORE BITE</p>
+        <h1>Snake<span aria-hidden="true">.</span></h1>
+      </div>
+      <div class="scores" aria-label="Scores">
+        <div><span>Score</span><output id="score" aria-label="Score">0</output></div>
+        <div><span>Best</span><output id="best" aria-label="Best score">0</output></div>
+      </div>
+    </header>
+    <div class="game-layout">
+      <section class="arena" aria-label="Snake game">
+        <div class="board">
+          <canvas id="board" width="600" height="600" tabindex="0" role="img" aria-label="Snake board: green snake and orange food" aria-describedby="instructions status">
+            Snake requires a browser with canvas support. Use the directions and game buttons below to play.
+          </canvas>
+          <div class="overlay" id="overlay" aria-hidden="true">
+            <strong id="overlay-title">Ready to grow?</strong>
+            <span id="overlay-hint">Select Start game to begin.</span>
+          </div>
+        </div>
+        <p id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Ready. Select Start game to begin.</p>
+      </section>
+      <aside class="panel" aria-label="Game controls and instructions">
+        <div class="actions">
+          <button id="start" type="button">Start game</button>
+          <button id="pause" type="button" disabled>Pause</button>
+        </div>
+        <h2>Eat. Grow. Repeat.</h2>
+        <div id="instructions">
+          <p>Steer with <strong>arrow keys</strong> or <strong>WASD</strong>, or tap the direction buttons below.</p>
+          <p>Orange food earns <strong>10 points</strong> and makes you longer and faster. Avoid the walls and your own body. You cannot reverse direction.</p>
+          <p><strong>P / Space</strong> pauses or resumes when the board is focused. <strong>Enter</strong> starts or restarts. Buttons also work with Tab and Enter.</p>
+          <p>Leaving the window pauses play. Resume when you’re ready. Best score is saved on this browser when storage is available.</p>
+        </div>
+        <div class="dpad" role="group" aria-label="Direction controls">
+          <button type="button" data-direction="up" aria-label="Move up">↑</button>
+          <button type="button" data-direction="left" aria-label="Move left">←</button>
+          <button type="button" data-direction="down" aria-label="Move down">↓</button>
+          <button type="button" data-direction="right" aria-label="Move right">→</button>
+        </div>
+        <p class="tip">Plan your next turn. Leave room for your tail.</p>
+      </aside>
+    </div>
+    <noscript><p class="status">Enable JavaScript to play Snake.</p></noscript>
+  </main>
+</body>
+</html>

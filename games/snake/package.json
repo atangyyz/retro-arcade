@@ -1,0 +1,11 @@
+{
+  "name": "retro-snake",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A dependency-free browser Snake game.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check game.js && node --check main.js"
+  }
+}

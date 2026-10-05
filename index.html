@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1019">
-  <meta name="description" content="Four arcade classics. Play Pong, Frogger, Space Invaders, and Asteroids right in your browser. No downloads, no quarters.">
+  <meta name="description" content="Five arcade classics. Play Pong, Frogger, Space Invaders, Asteroids, and Snake right in your browser. No downloads, no quarters.">
   <title>Retro Arcade — Choose your game</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1019'/%3E%3Cpath d='M8 8h6v6H8zm10 0h6v6h-6zM8 18h6v6H8zm10 0h6v6h-6z' fill='%2391f3cf'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./assets/arcade.css">
@@ -19,13 +19,13 @@
     <section class="intro" aria-labelledby="welcome">
       <p class="eyebrow">THE CLASSICS NEVER GET OLD</p>
       <h1 id="welcome">Small pixels.<br><span>Big adventures.</span></h1>
-      <p class="lede">Your next high score starts here. Four arcade classics, ready to play in your browser. No downloads. No quarters.</p>
+      <p class="lede">Your next high score starts here. Five arcade classics, ready to play in your browser. No downloads. No quarters.</p>
       <a class="choose-link" href="#games">Choose your game <span aria-hidden="true">↓</span></a>
     </section>
     <section id="games" class="games" aria-labelledby="games-heading" tabindex="-1">
       <div class="section-heading">
         <h2 id="games-heading">SELECT A GAME</h2>
-        <span>04 CLASSICS / FREE PLAY</span>
+        <span>05 CLASSICS / FREE PLAY</span>
       </div>
       <div class="game-grid">
         <a class="game-card pong" href="./games/pong/index.html" aria-labelledby="pong-title pong-play" aria-describedby="pong-description pong-controls">
@@ -76,6 +76,18 @@
             <span class="play" id="asteroids-play">Play Asteroids <span aria-hidden="true">↗</span></span>
           </div>
         </a>
+        <a class="game-card snake" href="./games/snake/index.html" aria-labelledby="snake-title snake-play" aria-describedby="snake-description snake-controls">
+          <div class="preview" aria-hidden="true">
+            <svg viewBox="0 0 320 180"><path class="dim" d="M30 30h260v120H30z" fill="none" stroke-width="2"/><path class="snake-body" d="M80 125h60V65h65"/><rect x="195" y="55" width="20" height="20" rx="3"/><circle class="food" cx="250" cy="100" r="9"/></svg>
+            <span class="game-number">05 / ONE MORE BITE</span>
+          </div>
+          <div class="card-content">
+            <h3 id="snake-title">Snake</h3>
+            <p id="snake-description">Eat, grow, and pick up speed. Dodge the walls and your own tail to chase a new best.</p>
+            <p class="controls" id="snake-controls">Arrow keys / WASD · P to pause · Touch</p>
+            <span class="play" id="snake-play">Play Snake <span aria-hidden="true">↗</span></span>
+          </div>
+        </a>
       </div>
     </section>
     <aside class="player-note" aria-label="How to play">
@@ -83,6 +95,6 @@
       <p><strong>Pick up and play.</strong> Each game includes its own controls and on-screen buttons. Use Tab to explore and Enter to select. Your browser is the arcade.</p>
     </aside>
   </main>
-  <footer><span>RETRO ARCADE</span><span>FOUR GAMES. ENDLESS “ONE MORE TRY.”</span></footer>
+  <footer><span>RETRO ARCADE</span><span>FIVE GAMES. ENDLESS “ONE MORE TRY.”</span></footer>
 </body>
 </html>
