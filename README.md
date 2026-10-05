@@ -1,7 +1,7 @@
 # Retro Arcade
 
-Five playable browser classics in one static site: **Pong**, **Frogger**,
-**Space Invaders**, **Asteroids**, and **Snake**. Choose a game on the homepage, play,
+Six playable browser classics in one static site: **Pong**, **Frogger**,
+**Space Invaders**, **Asteroids**, **Snake**, and **Gauntlet**. Choose a game on the homepage, play,
 then use **← Back to Arcade** to choose another.
 
 ## Run locally
@@ -24,13 +24,13 @@ Run from the repository root:
 
 ```sh
 npm run check       # Syntax-check all game entry points and engines
-npm test            # Site navigation checks, then all five game test suites
+npm test            # Site navigation checks, then all six game test suites
 npm run test:site   # Homepage, return links, assets, Pages subpaths, focus styles
-npm run test:games  # All five game suites, including Snake's simulation tests
+npm run test:games  # All six game suites, including Snake and Gauntlet simulation tests
 ```
 
 To test just one game, use `npm --prefix games/pong test` (replace `pong`
-with `frogger`, `space-invaders`, `asteroids`, or `snake`). Asteroids also retains
+with `frogger`, `space-invaders`, `asteroids`, `snake`, or `gauntlet`). Asteroids also retains
 its original `npm --prefix games/asteroids run check` command; Snake has
 `npm --prefix games/snake run check`.
 No framework, bundler, backend, or external test dependencies are needed.
@@ -44,6 +44,7 @@ No framework, bundler, backend, or external test dependencies are needed.
 | Space Invaders | `games/space-invaders/index.html` | [atangyyz/retro-space-invaders](https://github.com/atangyyz/retro-space-invaders) |
 | Asteroids | `games/asteroids/index.html` | [atangyyz/retro-asteroids](https://github.com/atangyyz/retro-asteroids) |
 | Snake | `games/snake/index.html` | Built for this arcade |
+| Gauntlet | `games/gauntlet/index.html` | Built for this arcade |
 
 The four original games were imported from the source projects' `main` branches
 on 2026-10-05. Their folders retain the complete source snapshots, including READMEs,
@@ -61,6 +62,11 @@ and eat food for 10 points, growth, and increasing speed. Walls and your own bod
 end the round; **Restart game** starts fresh. Use **P / Space** with the board
 focused or the **Pause / Resume** button to pause. Leaving the window also pauses;
 resuming is manual. Best score persists in browser storage when available.
+
+Gauntlet is self-contained in `games/gauntlet/`: explore with the arrow keys /
+WASD or direction buttons, attack with Space or the Attack button, collect
+treasure and potions, find the key, and reach the exit. Its grid-based engine
+and deterministic tests are independent of the other games.
 
 The homepage lives in `index.html`; `assets/arcade.css` styles it and
 `assets/navigation.css` styles only the shared return links. Game implementations

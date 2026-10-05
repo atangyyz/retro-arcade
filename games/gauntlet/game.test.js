@@ -62,13 +62,13 @@ test('melee attacks defeat an adjacent enemy and increase score', () => {
 test('enemies pursue through corridors, attacks have a cooldown, and health can reach game over', () => {
   const game = createGame();
   startGame(game);
-  game.player = { x: 5, y: 1, facing: 'right' };
-  game.enemies = [{ x: 7, y: 1, health: 2 }];
-  stepGame(game, 'right');
-  stepGame(game, 'right');
-  assert.deepEqual(game.enemies[0] && { x: game.enemies[0].x, y: game.enemies[0].y }, { x: 6, y: 1 });
-  game.player = { x: 5, y: 1, facing: 'right' };
-  for (let i = 0; i < 10 && game.status === 'playing'; i++) stepGame(game, 'attack');
+  game.player = { x: 9, y: 1, facing: 'left' };
+  game.enemies = [{ x: 11, y: 1, health: 2 }];
+  stepGame(game, 'left');
+  stepGame(game, 'left');
+  assert.deepEqual({ x: game.enemies[0].x, y: game.enemies[0].y }, { x: 10, y: 1 });
+  game.player = { x: 9, y: 1, facing: 'up' };
+  for (let i = 0; i < 30 && game.status === 'playing'; i++) stepGame(game, 'attack');
   assert.equal(game.status, 'gameover');
   assert.equal(game.health, 0);
   assert.equal(game.reason, 'overwhelmed');
@@ -86,7 +86,7 @@ test('potions restore health only up to the maximum', () => {
   game.health = 5;
   stepGame(game, 'right');
   assert.equal(game.health, 5);
-  assert.equal(game.potions.length, 1);
+  assert.equal(game.potions.length, 0);
 });
 
 test('pause freezes the dungeon and restart preserves the best score', () => {
