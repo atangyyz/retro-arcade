@@ -1,7 +1,7 @@
 # Retro Arcade
 
-Four playable browser classics in one static site: **Pong**, **Frogger**,
-**Space Invaders**, and **Asteroids**. Choose a game on the homepage, play,
+Five playable browser classics in one static site: **Pong**, **Frogger**,
+**Space Invaders**, **Asteroids**, and **Snake**. Choose a game on the homepage, play,
 then use **← Back to Arcade** to choose another.
 
 ## Run locally
@@ -24,14 +24,15 @@ Run from the repository root:
 
 ```sh
 npm run check       # Syntax-check all game entry points and engines
-npm test            # Site navigation checks, then all four original test suites
+npm test            # Site navigation checks, then all five game test suites
 npm run test:site   # Homepage, return links, assets, Pages subpaths, focus styles
-npm run test:games  # All original game suites
+npm run test:games  # All five game suites, including Snake's simulation tests
 ```
 
 To test just one game, use `npm --prefix games/pong test` (replace `pong`
-with `frogger`, `space-invaders`, or `asteroids`). Asteroids also retains
-its original `npm --prefix games/asteroids run check` command.
+with `frogger`, `space-invaders`, `asteroids`, or `snake`). Asteroids also retains
+its original `npm --prefix games/asteroids run check` command; Snake has
+`npm --prefix games/snake run check`.
 No framework, bundler, backend, or external test dependencies are needed.
 
 ## Layout and source projects
@@ -42,14 +43,24 @@ No framework, bundler, backend, or external test dependencies are needed.
 | Frogger | `games/frogger/index.html` | [atangyyz/retro-frogger](https://github.com/atangyyz/retro-frogger) |
 | Space Invaders | `games/space-invaders/index.html` | [atangyyz/retro-space-invaders](https://github.com/atangyyz/retro-space-invaders) |
 | Asteroids | `games/asteroids/index.html` | [atangyyz/retro-asteroids](https://github.com/atangyyz/retro-asteroids) |
+| Snake | `games/snake/index.html` | Built for this arcade |
 
-Imported from the source projects' `main` branches on 2026-10-05.
-Each folder retains the complete source snapshot, including its README,
+The four original games were imported from the source projects' `main` branches
+on 2026-10-05. Their folders retain the complete source snapshots, including READMEs,
 package metadata, styles, game logic, and tests. Only each game's HTML was
 adjusted to include the shared return link and its stylesheet; Asteroids'
 existing brand/home link now also returns to the arcade homepage.
 The original repositories are unchanged. Original package license declarations
 are retained; importing these projects does not grant a new license.
+
+Snake is self-contained in `games/snake/`: `index.html` and `style.css` provide
+the page, `game.js` is the DOM-free grid simulation, `main.js` handles canvas,
+keyboard and on-screen controls, and `game.test.js` uses Node's built-in runner.
+Select **Start game**, steer with **arrow keys / WASD** or the direction buttons,
+and eat food for 10 points, growth, and increasing speed. Walls and your own body
+end the round; **Restart game** starts fresh. Use **P / Space** with the board
+focused or the **Pause / Resume** button to pause. Leaving the window also pauses;
+resuming is manual. Best score persists in browser storage when available.
 
 The homepage lives in `index.html`; `assets/arcade.css` styles it and
 `assets/navigation.css` styles only the shared return links. Game implementations

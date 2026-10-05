@@ -37,6 +37,7 @@ h2 { font-size: 15px; letter-spacing: 2px; margin: 0; }
 .frogger { --accent: #b9ee85; }
 .invaders { --accent: #c9b1ff; }
 .asteroids { --accent: #ffc28f; }
+.snake { --accent: #91f3cf; }
 .preview { color: var(--accent); position: relative; height: 210px; padding: 12px 24px 34px; border-bottom: 1px solid var(--line); background: repeating-linear-gradient(0deg, #ffffff03 0 1px, transparent 1px 5px), #0c1420; }
 .preview svg { width: 100%; height: 100%; fill: currentColor; }
 .preview path { stroke: currentColor; stroke-width: 6; }
@@ -47,6 +48,8 @@ h2 { font-size: 15px; letter-spacing: 2px; margin: 0; }
 .preview .frog { stroke: none; }
 .preview .rock, .preview .ship { fill: none; stroke-width: 2; }
 .preview .shot { stroke-width: 3; }
+.preview .snake-body { fill: none; stroke-width: 18; stroke-linejoin: round; }
+.preview .food { fill: #ffc28f; }
 .game-number { position: absolute; bottom: 14px; left: 24px; font-size: 10px; letter-spacing: 2px; }
 .card-content { padding: 26px; display: flex; flex-direction: column; flex: 1; }
 h3 { font-size: 26px; margin: 0 0 12px; letter-spacing: -1px; }
