@@ -53,3 +53,10 @@ h2 { margin: 0 0 12px; color: #f5bd62; font-size: 15px; letter-spacing: 1px; tex
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; }
 }
+
+canvas { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+button { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+@media (pointer: coarse) {
+  .dpad { grid-template-columns: repeat(3, 64px); grid-template-rows: repeat(2, 56px); gap: 8px; }
+  .actions button { min-height: 48px; }
+}

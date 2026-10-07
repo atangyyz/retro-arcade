@@ -59,3 +59,5 @@ h2 { font-size: 18px; margin: 28px 0 16px; }
 @media (prefers-reduced-motion: reduce) {
   button { transition: none; }
 }
+
+canvas { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }

@@ -150,6 +150,29 @@ document.querySelector('#restart').addEventListener('click', () => {
 document.querySelectorAll('[data-direction]').forEach(button => {
   button.addEventListener('click', () => hop(button.dataset.direction));
 });
+
+function onSwipe(target, handler, onTap) {
+  let origin = null;
+  target.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse') return;
+    origin = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  });
+  target.addEventListener('pointerup', event => {
+    if (!origin || origin.id !== event.pointerId) return;
+    const dx = event.clientX - origin.x;
+    const dy = event.clientY - origin.y;
+    origin = null;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) {
+      if (onTap) onTap();
+      return;
+    }
+    handler(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+  });
+  target.addEventListener('pointercancel', () => { origin = null; });
+}
+
+onSwipe(canvas, hop, () => hop('up'));
+
 const keys = { ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', w: 'up', s: 'down', a: 'left', d: 'right' };
 canvas.addEventListener('keydown', event => {
   if (event.altKey || event.ctrlKey || event.metaKey) return;

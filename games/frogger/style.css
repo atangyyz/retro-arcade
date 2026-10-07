@@ -53,3 +53,6 @@ footer { text-align: center; color: var(--muted); font-size: 9px; letter-spacing
   .cabinet { padding: 10px; }
   kbd { display: none; }
 }
+
+canvas { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.dpad button { touch-action: manipulation; }
