@@ -66,11 +66,15 @@ test('shared styles retain visible focus and reduced-motion support', async () =
 test('homepage copy reflects all six games and includes inline game previews', async () => {
   const html = await read('index.html');
   assert.match(html, /Six arcade classics/);
-  assert.match(html, /<title>A Gift for Miles/);
+  assert.match(html, /<title>A Gift for You/);
+  assert.match(html, /A gift<br><span>for you\.<\/span>/);
+  assert.doesNotMatch(html, /Miles/i);
   assert.match(html, /A fencing axolotl/);
-  assert.match(html, /MADE WITH LOVE FOR MILES/);
+  assert.match(html, /MADE WITH LOVE FOR YOU/);
   assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
-  assert.match(html, /<title id="axolotl-title">A fencing axolotl/);
+  assert.match(html, /<title id="axolotl-title">A fencing axolotl in a lunge, extending a foil/);
+  assert.match(html, /class="axolotl-leg"/);
+  assert.match(html, /class="axolotl-foil"/);
   assert.match(html, /06 CLASSICS \/ FREE PLAY/);
   assert.match(html, /SIX GAMES\./);
   assert.doesNotMatch(html, /five (?:arcade classics|games)/i);

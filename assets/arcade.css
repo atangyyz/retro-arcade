@@ -29,19 +29,22 @@ h1 span { color: var(--mint); }
 .choose-link span { color: var(--mint); }
 .axolotl-art { display: block; width: min(100%, 360px); justify-self: center; overflow: visible; filter: drop-shadow(0 14px 30px #d875a52b); }
 .axolotl-halo { fill: #402c4c; stroke: #755278; stroke-width: 2; }
-.axolotl-ripple, .axolotl-gill, .axolotl-smile, .axolotl-arm, .axolotl-foil, .axolotl-guard, .axolotl-foil-tip, .axolotl-bubbles { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.axolotl-ripple { stroke: #65d9c0; stroke-width: 4; opacity: .75; }
+.axolotl-ripple, .axolotl-gill, .axolotl-smile, .axolotl-arm, .axolotl-foil, .axolotl-guard, .axolotl-grip, .axolotl-foil-tip, .axolotl-leg, .axolotl-shoe, .axolotl-jacket-detail { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.axolotl-ripple { stroke: #65d9c0; stroke-width: 3; opacity: .75; }
 .axolotl-gill { stroke: #ff9abc; stroke-width: 9; }
+.axolotl-leg { stroke: #f18eaf; stroke-width: 15; }
+.axolotl-shoe { stroke: #755bd2; stroke-width: 10; }
 .axolotl-body { fill: #f18eaf; stroke: #ffd1df; stroke-width: 3; }
 .axolotl-belly { fill: #ffd5df; stroke: none; }
 .axolotl-jacket { fill: #755bd2; stroke: #c8b8ff; stroke-width: 3; }
+.axolotl-jacket-detail { stroke: #c8b8ff; stroke-width: 2; }
 .axolotl-face { fill: #39233f; stroke: none; }
-.axolotl-smile { stroke: #9d476a; stroke-width: 3; }
+.axolotl-smile { stroke: #9d476a; stroke-width: 2; }
 .axolotl-arm { stroke: #f18eaf; stroke-width: 17; }
 .axolotl-foil { stroke: #e5f7ff; stroke-width: 4; }
 .axolotl-guard { stroke: #ffd36d; stroke-width: 5; }
+.axolotl-grip { stroke: #755bd2; stroke-width: 6; }
 .axolotl-foil-tip { stroke: #e5f7ff; stroke-width: 3; }
-.axolotl-bubbles { stroke: #a5f2dc; stroke-width: 3; }
 .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
 h2 { font-size: 15px; letter-spacing: 2px; margin: 0; }
 .section-heading > span { color: var(--muted); font-size: 11px; }
