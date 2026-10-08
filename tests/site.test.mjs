@@ -149,6 +149,9 @@ test('Gauntlet exposes keyboard instructions, status and touch controls', async 
   assert.match(html, /id="status"[^>]*role="status"[^>]*aria-live="polite"/);
   assert.match(html, /id="start"[^>]*>Start run/);
   assert.match(html, /id="attack"[^>]*>Attack/);
+  assert.match(html, /Each arrow, WASD key, direction button, or swipe moves one tile/);
+  assert.match(html, /Walk into a monster to hit it/);
+  assert.match(html, /key in the upper-right/);
   for (const direction of ['up', 'down', 'left', 'right']) {
     assert.match(html, new RegExp(`data-direction="${direction}" aria-label="Move ${direction}"`));
   }

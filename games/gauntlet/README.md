@@ -12,15 +12,16 @@ Use a local web server from the repository root (`npm start`) and open
 
 | Action | Controls |
 | --- | --- |
-| Move | Arrow keys / WASD, or direction buttons |
-| Attack in the direction faced | Space or Attack button |
+| Move one tile | Arrow keys / WASD, direction buttons, or swipe the board |
+| Attack | Walk into a monster, or press Space / Attack to strike the way you face |
 | Pause / resume | P or Pause button |
 | Start / restart | Start run button |
 
-Monsters pursue through the dungeon. Treasure is worth 100 points, defeating a
-monster is worth 50, and escaping with the key awards 500. Potions restore up to
-two health points, to a maximum of five. Best score is saved in local browser
-storage when available.
+Find the key in the upper-right and reach the exit in the lower-right to win;
+you can dodge monsters instead of defeating them. Monsters act every other
+move or attack. Treasure is worth 100 points, defeating a monster is worth 50,
+and escaping with the key awards 500. Potions restore up to two health points,
+to a maximum of five. Best score is saved in local browser storage when available.
 
 ## Checks
 

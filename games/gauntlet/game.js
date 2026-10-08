@@ -170,11 +170,11 @@ export function stepGame(game, command) {
     const y = game.player.y + direction.y;
     const enemyIndex = at(game.enemies, x, y);
     if (enemyIndex !== -1) {
-    attack(game);
+      attack(game);
     } else if (isFloor(x, y)) {
-    game.player.x = x;
-    game.player.y = y;
-    collectItems(game);
+      game.player.x = x;
+      game.player.y = y;
+      collectItems(game);
     }
   }
 

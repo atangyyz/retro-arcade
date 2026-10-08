@@ -134,8 +134,8 @@ function syncUI() {
   pauseButton.textContent = game.status === 'paused' ? 'Resume' : 'Pause';
   overlay.hidden = game.status === 'playing';
   const messages = {
-    ready: ['The dungeon awaits.', 'Select Start run to begin.', 'Ready. Select Start run to begin.'],
-    playing: ['', '', `In the dungeon. Score ${game.score}. Health ${game.health}.`],
+    ready: ['The dungeon awaits.', 'Move with arrows / WASD or swipe. Walk into monsters to attack.', 'Ready. Select Start run to begin.'],
+    playing: ['', '', `Move one tile per input. Walk into a monster or press Space to attack. Score ${game.score}. Health ${game.health}.`],
     paused: ['Run paused.', 'Select Resume or press P.', 'Paused. Select Resume or press P to continue.'],
     won: ['Dungeon cleared!', `You escaped with ${game.score} points. Play again?`, `Dungeon cleared. Final score ${game.score}.`],
     gameover: ['Run over.', 'The monsters got you. Try again?', `Overwhelmed by monsters. Final score ${game.score}.`]

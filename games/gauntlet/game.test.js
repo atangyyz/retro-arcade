@@ -59,6 +59,37 @@ test('melee attacks defeat an adjacent enemy and increase score', () => {
   assert.equal(game.best, 50);
 });
 
+test('walking into a monster attacks it and delays its first hit on the player', () => {
+  const game = createGame();
+  startGame(game);
+  game.player = { x: 9, y: 1, facing: 'right' };
+  game.enemies = [{ x: 10, y: 1, health: 2 }];
+
+  stepGame(game, 'right');
+  assert.deepEqual(game.player, { x: 9, y: 1, facing: 'right' });
+  assert.equal(game.enemies[0].health, 1);
+  assert.equal(game.health, 5);
+
+  stepGame(game, 'right');
+  assert.equal(game.enemies.length, 0);
+  assert.equal(game.health, 5);
+  assert.equal(game.score, 50);
+});
+
+test('a monster gives the player two enemy turns before its first attack', () => {
+  const game = createGame();
+  startGame(game);
+  game.player = { x: 9, y: 1, facing: 'right' };
+  game.enemies = [{ x: 10, y: 1, health: 3 }];
+
+  stepGame(game, 'up');
+  stepGame(game, 'attack');
+  assert.equal(game.health, 5);
+  stepGame(game, 'up');
+  stepGame(game, 'attack');
+  assert.equal(game.health, 4);
+});
+
 test('enemies pursue through corridors, attacks have a cooldown, and health can reach game over', () => {
   const game = createGame();
   startGame(game);
