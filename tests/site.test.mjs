@@ -100,6 +100,24 @@ test('homepage styles its gift theme and keeps the axolotl responsive', async ()
   assert.match(css, /@media \(max-width: 600px\)[\s\S]*\.axolotl-art/);
 });
 
+test('axolotl illustration includes tailored fencing gear and self-contained SVG details', async () => {
+  const html = await read('index.html');
+  const css = await read('assets/arcade.css');
+  const art = html.match(/<svg class="axolotl-art"[\s\S]*?<\/svg>/)?.[0];
+  assert.ok(art);
+  assert.match(art, /wearing a fitted white fencing jacket/);
+  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'tail', 'gill-fronds', 'guard']) {
+    assert.match(art, new RegExp(`class="axolotl-${detail}"`));
+    assert.match(css, new RegExp(`\\.axolotl-${detail}\\b`));
+  }
+  for (const [, id] of css.matchAll(/url\(#(axolotl-[^)]+)\)/g)) {
+    assert.match(art, new RegExp(`id="${id}"`));
+  }
+  for (const [, path] of art.matchAll(/\bd="([^"]+)"/g)) {
+    assert.match(path, /^[MmLlHhVvCcSsQqTtAaZz\d\s.,+-]+$/, 'Unexpected SVG path character');
+  }
+});
+
 test('Snake exposes instructions, live status, touch controls and visible focus', async () => {
   const html = await read('games/snake/index.html');
   const css = await read('games/snake/style.css');
