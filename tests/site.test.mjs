@@ -66,6 +66,11 @@ test('shared styles retain visible focus and reduced-motion support', async () =
 test('homepage copy reflects all six games and includes inline game previews', async () => {
   const html = await read('index.html');
   assert.match(html, /Six arcade classics/);
+  assert.match(html, /<title>A Gift for Miles/);
+  assert.match(html, /A fencing axolotl/);
+  assert.match(html, /MADE WITH LOVE FOR MILES/);
+  assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
+  assert.match(html, /<title id="axolotl-title">A fencing axolotl/);
   assert.match(html, /06 CLASSICS \/ FREE PLAY/);
   assert.match(html, /SIX GAMES\./);
   assert.doesNotMatch(html, /five (?:arcade classics|games)/i);
@@ -82,6 +87,13 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(gauntlet[0], /<svg viewBox=/);
   assert.match(gauntlet[0], /id="gauntlet-description"/);
   assert.match(gauntlet[0], /id="gauntlet-controls"/);
+});
+
+test('homepage styles its gift theme and keeps the axolotl responsive', async () => {
+  const css = await read('assets/arcade.css');
+  assert.match(css, /\.axolotl-art\s*\{/);
+  assert.match(css, /\.axolotl-foil\s*\{/);
+  assert.match(css, /@media \(max-width: 600px\)[\s\S]*\.axolotl-art/);
 });
 
 test('Snake exposes instructions, live status, touch controls and visible focus', async () => {
