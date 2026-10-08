@@ -72,7 +72,7 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(html, /A fencing axolotl/);
   assert.match(html, /MADE WITH LOVE FOR YOU/);
   assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
-  assert.match(html, /<title id="axolotl-title">A fencing axolotl in a lunge, extending a foil/);
+  assert.match(html, /<title id="axolotl-title">A fencing axolotl with feathery external gills lunges forward/);
   assert.match(html, /class="axolotl-leg"/);
   assert.match(html, /class="axolotl-foil"/);
   assert.match(html, /06 CLASSICS \/ FREE PLAY/);
