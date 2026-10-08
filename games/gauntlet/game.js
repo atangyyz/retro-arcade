@@ -135,7 +135,7 @@ function moveEnemies(game) {
     occupied.delete(`${enemy.x},${enemy.y}`);
     const distance = Math.abs(enemy.x - game.player.x) + Math.abs(enemy.y - game.player.y);
     if (distance === 1) {
-      enemy.cooldown = (enemy.cooldown ?? 0) - 1;
+      enemy.cooldown = (enemy.cooldown ?? 2) - 1;
       if (enemy.cooldown <= 0) {
         game.health--;
         enemy.cooldown = 3;
@@ -168,10 +168,13 @@ export function stepGame(game, command) {
     const direction = DIRECTIONS[command];
     const x = game.player.x + direction.x;
     const y = game.player.y + direction.y;
-    if (isFloor(x, y) && at(game.enemies, x, y) === -1) {
-      game.player.x = x;
-      game.player.y = y;
-      collectItems(game);
+    const enemyIndex = at(game.enemies, x, y);
+    if (enemyIndex !== -1) {
+    attack(game);
+    } else if (isFloor(x, y)) {
+    game.player.x = x;
+    game.player.y = y;
+    collectItems(game);
     }
   }
 
