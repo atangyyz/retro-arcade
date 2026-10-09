@@ -66,11 +66,12 @@ test('shared styles retain visible focus and reduced-motion support', async () =
 test('homepage copy reflects all six games and includes inline game previews', async () => {
   const html = await read('index.html');
   assert.match(html, /Six arcade classics/);
-  assert.match(html, /<title>A Gift for You/);
-  assert.match(html, /A gift<br><span>for you\.<\/span>/);
+  assert.match(html, /<title>Retro Arcade/);
+  assert.match(html, /<h1 id="welcome">Retro<br><span>Arcade\.<\/span><\/h1>/);
+  assert.doesNotMatch(html, /\bgift\b/i);
   assert.doesNotMatch(html, /Miles/i);
   assert.match(html, /A fencing axolotl/);
-  assert.match(html, /MADE WITH LOVE FOR YOU/);
+  assert.match(html, /BUILT FOR ARCADE FANS/);
   assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
   assert.match(html, /<title id="axolotl-title">A fencing axolotl in a lunge, extending a foil/);
   assert.match(html, /class="axolotl-leg"/);
@@ -93,7 +94,7 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(gauntlet[0], /id="gauntlet-controls"/);
 });
 
-test('homepage styles its gift theme and keeps the axolotl responsive', async () => {
+test('homepage styles its arcade theme and keeps the axolotl responsive', async () => {
   const css = await read('assets/arcade.css');
   assert.match(css, /\.axolotl-art\s*\{/);
   assert.match(css, /\.axolotl-foil\s*\{/);
