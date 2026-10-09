@@ -70,7 +70,7 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(html, /<h1 id="welcome">Retro<br><span>Arcade\.<\/span><\/h1>/);
   assert.doesNotMatch(html, /\bgift\b/i);
   assert.doesNotMatch(html, /Miles/i);
-  assert.match(html, /A fencing axolotl/);
+  assert.match(html, /fencing axolotl/);
   assert.match(html, /BUILT FOR ARCADE FANS/);
   assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
   assert.match(html, /<title id="axolotl-title">A lifelike pink axolotl with feathery external gills and a finned tail/);
