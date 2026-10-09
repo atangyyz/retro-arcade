@@ -73,7 +73,7 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(html, /A fencing axolotl/);
   assert.match(html, /BUILT FOR ARCADE FANS/);
   assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
-  assert.match(html, /<title id="axolotl-title">A fencing axolotl in a lunge, extending a foil/);
+  assert.match(html, /<title id="axolotl-title">A lifelike pink axolotl with feathery external gills and a finned tail/);
   assert.match(html, /class="axolotl-leg"/);
   assert.match(html, /class="axolotl-foil"/);
   assert.match(html, /06 CLASSICS \/ FREE PLAY/);
@@ -106,8 +106,8 @@ test('axolotl illustration includes tailored fencing gear and self-contained SVG
   const css = await read('assets/arcade.css');
   const art = html.match(/<svg class="axolotl-art"[\s\S]*?<\/svg>/)?.[0];
   assert.ok(art);
-  assert.match(art, /wearing a fitted white fencing jacket/);
-  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'tail', 'gill-fronds', 'guard']) {
+  assert.match(art, /fencing in a fitted white jacket/);
+  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'tail', 'tail-fin', 'gill-fronds', 'gill-filaments', 'speckles', 'eye', 'guard']) {
     assert.match(art, new RegExp(`class="axolotl-${detail}"`));
     assert.match(css, new RegExp(`\\.axolotl-${detail}\\b`));
   }

@@ -35,8 +35,10 @@ h1 span { color: var(--mint); }
 .axolotl-ripple { stroke: #65d9c0; stroke-width: 3; opacity: .75; }
 .axolotl-gill { stroke: #f18eaf; stroke-width: 7; }
 .axolotl-gill-fronds { stroke: #ffb3cd; stroke-width: 4; }
+.axolotl-gill-filaments { fill: none; stroke: #ffd0df; stroke-width: 2; }
+.axolotl-tail-fin { fill: url(#axolotl-fin); stroke: #e98dac; stroke-width: 1.5; }
 .axolotl-tail, .axolotl-hand { fill: url(#axolotl-skin); stroke: #ffd1df; stroke-width: 2; }
-.axolotl-tail-detail { stroke: #d8739c; stroke-width: 2; }
+.axolotl-tail-detail { stroke: #d8739c; stroke-width: 1.5; }
 .axolotl-leg { stroke: #f18eaf; stroke-width: 15; }
 .axolotl-shoe { fill: #755bd2; stroke: #c8b8ff; stroke-width: 2; }
 .axolotl-shoe-detail { stroke: #eee8ff; stroke-width: 2; }
@@ -45,9 +47,10 @@ h1 span { color: var(--mint); }
 .axolotl-cuff { fill: #e7edf8; stroke: #a6b7d1; stroke-width: 2; }
 .axolotl-jacket-detail { stroke: #a6b7d1; stroke-width: 1.5; }
 .axolotl-cheek { fill: #e975a2; opacity: .55; }
-.axolotl-face { fill: #39233f; stroke: none; }
+.axolotl-speckles { fill: none; stroke: #c9698d; stroke-width: 3; opacity: .7; }
+.axolotl-eye { fill: #302033; stroke: #ffe3eb; stroke-width: 2; }
 .axolotl-eye-shine { stroke: #fffdf9; stroke-width: 3; }
-.axolotl-smile { stroke: #9d476a; stroke-width: 2; }
+.axolotl-nostril, .axolotl-smile { stroke: #9d476a; stroke-width: 2; }
 .axolotl-arm { stroke: #e7edf8; stroke-width: 16; }
 .axolotl-foil { stroke: #e5f7ff; stroke-width: 2; }
 .axolotl-guard { fill: #d8e4f2; stroke: #91a8c7; stroke-width: 2; }
