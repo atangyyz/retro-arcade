@@ -66,13 +66,14 @@ test('shared styles retain visible focus and reduced-motion support', async () =
 test('homepage copy reflects all six games and includes inline game previews', async () => {
   const html = await read('index.html');
   assert.match(html, /Six arcade classics/);
-  assert.match(html, /<title>A Gift for You/);
-  assert.match(html, /A gift<br><span>for you\.<\/span>/);
+  assert.match(html, /<title>Retro Arcade/);
+  assert.match(html, /<h1 id="welcome">Retro<br><span>Arcade\.<\/span><\/h1>/);
+  assert.doesNotMatch(html, /\bgift\b/i);
   assert.doesNotMatch(html, /Miles/i);
-  assert.match(html, /A fencing axolotl/);
-  assert.match(html, /MADE WITH LOVE FOR YOU/);
+  assert.match(html, /fencing axolotl/);
+  assert.match(html, /BUILT FOR ARCADE FANS/);
   assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
-  assert.match(html, /<title id="axolotl-title">A fencing axolotl in a lunge, extending a foil/);
+  assert.match(html, /<title id="axolotl-title">A lifelike pink axolotl with feathery external gills and a finned tail/);
   assert.match(html, /class="axolotl-leg"/);
   assert.match(html, /class="axolotl-foil"/);
   assert.match(html, /06 CLASSICS \/ FREE PLAY/);
@@ -93,7 +94,7 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(gauntlet[0], /id="gauntlet-controls"/);
 });
 
-test('homepage styles its gift theme and keeps the axolotl responsive', async () => {
+test('homepage styles its arcade theme and keeps the axolotl responsive', async () => {
   const css = await read('assets/arcade.css');
   assert.match(css, /\.axolotl-art\s*\{/);
   assert.match(css, /\.axolotl-foil\s*\{/);
@@ -105,8 +106,8 @@ test('axolotl illustration includes tailored fencing gear and self-contained SVG
   const css = await read('assets/arcade.css');
   const art = html.match(/<svg class="axolotl-art"[\s\S]*?<\/svg>/)?.[0];
   assert.ok(art);
-  assert.match(art, /wearing a fitted white fencing jacket/);
-  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'tail', 'gill-fronds', 'guard']) {
+  assert.match(art, /fencing in a fitted white jacket/);
+  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'tail', 'tail-fin', 'gill-fronds', 'gill-filaments', 'speckles', 'eye', 'guard']) {
     assert.match(art, new RegExp(`class="axolotl-${detail}"`));
     assert.match(css, new RegExp(`\\.axolotl-${detail}\\b`));
   }
