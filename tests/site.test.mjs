@@ -63,6 +63,18 @@ test('shared styles retain visible focus and reduced-motion support', async () =
   assert.match(homepage, /transition:\s*none/);
 });
 
+test('homepage theme toggle defaults to dark and supports a saved light theme', async () => {
+  const html = await read('index.html');
+  const css = await read('assets/arcade.css');
+  const script = await read('assets/theme.js');
+  assert.match(html, /<html lang="en" data-theme="dark">/);
+  assert.match(html, /id="theme-toggle"[^>]*aria-label="Switch to light mode"/);
+  assert.match(css, /:root\[data-theme="light"\]/);
+  assert.match(script, /localStorage\.getItem\('retro-arcade-theme'\)/);
+  assert.match(script, /localStorage\.setItem\('retro-arcade-theme', theme\)/);
+  assert.match(script, /toggle\.addEventListener\('click'/);
+});
+
 test('homepage copy reflects all six games and includes inline game previews', async () => {
   const html = await read('index.html');
   assert.match(html, /Six arcade classics/);
@@ -73,7 +85,7 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(html, /fencing axolotl/);
   assert.match(html, /BUILT FOR ARCADE FANS/);
   assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
-  assert.match(html, /<title id="axolotl-title">A lifelike pink axolotl with feathery external gills and a finned tail/);
+  assert.match(html, /<title id="axolotl-title">A cute pink axolotl with feathery external gills and a finned tail/);
   assert.match(html, /class="axolotl-leg"/);
   assert.match(html, /class="axolotl-foil"/);
   assert.match(html, /06 CLASSICS \/ FREE PLAY/);
@@ -107,7 +119,7 @@ test('axolotl illustration includes tailored fencing gear and self-contained SVG
   const art = html.match(/<svg class="axolotl-art"[\s\S]*?<\/svg>/)?.[0];
   assert.ok(art);
   assert.match(art, /fencing in a fitted white jacket/);
-  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'tail', 'tail-fin', 'gill-fronds', 'gill-filaments', 'speckles', 'eye', 'guard']) {
+  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'tail', 'tail-fin', 'gill-fronds', 'gill-filaments', 'speckles', 'eye', 'guard', 'bow', 'bow-knot']) {
     assert.match(art, new RegExp(`class="axolotl-${detail}"`));
     assert.match(css, new RegExp(`\\.axolotl-${detail}\\b`));
   }
