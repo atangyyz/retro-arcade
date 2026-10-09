@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,12 +8,16 @@
   <title>Retro Arcade — Six Classic Browser Games</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1019'/%3E%3Cpath d='M8 8h6v6H8zm10 0h6v6h-6zM8 18h6v6H8zm10 0h6v6h-6z' fill='%2391f3cf'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./assets/arcade.css">
+  <script src="./assets/theme.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#games">Skip to games</a>
   <header class="masthead">
     <a class="brand" href="./index.html"><span aria-hidden="true">▦</span> RETRO ARCADE</a>
-    <span class="status"><span aria-hidden="true">●</span> YOUR ARCADE IS READY</span>
+    <div class="masthead-tools">
+      <span class="status"><span aria-hidden="true">●</span> YOUR ARCADE IS READY</span>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode"><span aria-hidden="true">☀</span> Light mode</button>
+    </div>
   </header>
   <main>
     <section class="intro" aria-labelledby="welcome">

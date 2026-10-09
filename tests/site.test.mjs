@@ -63,6 +63,18 @@ test('shared styles retain visible focus and reduced-motion support', async () =
   assert.match(homepage, /transition:\s*none/);
 });
 
+test('homepage theme toggle defaults to dark and supports a saved light theme', async () => {
+  const html = await read('index.html');
+  const css = await read('assets/arcade.css');
+  const script = await read('assets/theme.js');
+  assert.match(html, /<html lang="en" data-theme="dark">/);
+  assert.match(html, /id="theme-toggle"[^>]*aria-label="Switch to light mode"/);
+  assert.match(css, /:root\[data-theme="light"\]/);
+  assert.match(script, /localStorage\.getItem\('retro-arcade-theme'\)/);
+  assert.match(script, /localStorage\.setItem\('retro-arcade-theme', theme\)/);
+  assert.match(script, /toggle\.addEventListener\('click'/);
+});
+
 test('homepage copy reflects all six games and includes inline game previews', async () => {
   const html = await read('index.html');
   assert.match(html, /Six arcade classics/);
