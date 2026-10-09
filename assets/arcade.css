@@ -27,7 +27,8 @@ h1 span { color: var(--mint); }
 .lede { max-width: 650px; font-family: system-ui, sans-serif; font-size: 18px; line-height: 1.7; color: var(--muted); }
 .choose-link { display: inline-block; margin-top: 14px; text-underline-offset: 6px; font-weight: bold; padding-block: 8px; }
 .choose-link span { color: var(--mint); }
-.axolotl-art { display: block; width: min(100%, 360px); justify-self: center; overflow: visible; filter: drop-shadow(0 14px 30px #d875a52b); }
+.axolotl-art { display: block; width: min(100%, 360px); justify-self: center; overflow: visible; filter: drop-shadow(0 14px 30px #d875a52b); animation: axolotl-bob 3.2s ease-in-out infinite; transform-origin: center; }
+@keyframes axolotl-bob { 50% { transform: translateY(-5px) rotate(1deg); } }
 .axolotl-halo { fill: #402c4c; stroke: #755278; stroke-width: 2; }
 .axolotl-art path, .axolotl-guard { stroke-linecap: round; stroke-linejoin: round; }
 .axolotl-ripple, .axolotl-gill, .axolotl-gill-fronds, .axolotl-smile, .axolotl-arm, .axolotl-foil, .axolotl-grip, .axolotl-foil-tip, .axolotl-leg, .axolotl-jacket-detail, .axolotl-tail-detail, .axolotl-shoe-detail, .axolotl-eye-shine { fill: none; }
@@ -43,6 +44,8 @@ h1 span { color: var(--mint); }
 .axolotl-shoe { fill: #755bd2; stroke: #c8b8ff; stroke-width: 2; }
 .axolotl-shoe-detail { stroke: #eee8ff; stroke-width: 2; }
 .axolotl-body { fill: url(#axolotl-skin); stroke: #ffd1df; stroke-width: 3; }
+.axolotl-bow { fill: #ff91b7; stroke: #ffd9e5; stroke-width: 2; }
+.axolotl-bow-knot { fill: #ffe3ec; stroke: #e975a2; stroke-width: 1; }
 .axolotl-jacket, .axolotl-sleeve, .axolotl-collar { fill: url(#axolotl-fabric); stroke: #a6b7d1; stroke-width: 2; }
 .axolotl-cuff { fill: #e7edf8; stroke: #a6b7d1; stroke-width: 2; }
 .axolotl-jacket-detail { stroke: #a6b7d1; stroke-width: 1.5; }
@@ -110,6 +113,7 @@ footer { border-top: 1px solid var(--line); display: flex; justify-content: spac
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .axolotl-art { animation: none; }
   .game-card { transition: none; }
   .game-card:hover { transform: none; }
 }
