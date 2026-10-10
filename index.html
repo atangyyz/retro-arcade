@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10121f">
-  <meta name="description" content="Retro Arcade: six arcade classics and a fencing axolotl, ready to play in your browser.">
+  <meta name="description" content="Retro Arcade: six arcade classics and a fencing retro kid, ready to play in your browser.">
   <title>Retro Arcade — Six Classic Browser Games</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1019'/%3E%3Cpath d='M8 8h6v6H8zm10 0h6v6h-6zM8 18h6v6H8zm10 0h6v6h-6z' fill='%2391f3cf'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./assets/arcade.css">
@@ -24,61 +24,61 @@
       <div class="intro-copy">
         <p class="eyebrow">SIX CLASSICS. ONE ARCADE.</p>
         <h1 id="welcome">Retro<br><span>Arcade.</span></h1>
-        <p class="lede">Six arcade classics, ready to play in your browser—with a fencing axolotl cheering you on. Choose a game and jump in.</p>
+        <p class="lede">Six arcade classics, ready to play in your browser—with a fencing retro kid cheering you on. Choose a game and jump in.</p>
         <a class="choose-link" href="#games">Choose your game <span aria-hidden="true">↓</span></a>
       </div>
-      <svg class="axolotl-art" viewBox="0 0 320 280" role="img" aria-labelledby="axolotl-title">
-        <title id="axolotl-title">A cute pink axolotl with feathery external gills and a finned tail, fencing in a fitted white jacket</title>
+      <svg class="fencer-art" viewBox="0 0 320 280" role="img" aria-labelledby="fencer-title">
+        <title id="fencer-title">A retro arcade kid with a bowl cut and sweatband, fencing in a fitted white jacket</title>
         <defs>
-          <linearGradient id="axolotl-skin" x1="0" y1="0" x2="0.8" y2="1">
-            <stop offset="0" stop-color="#ffd0df"/>
-            <stop offset=".55" stop-color="#f5a4be"/>
-            <stop offset="1" stop-color="#d96f98"/>
+          <linearGradient id="fencer-skin" x1="0" y1="0" x2="0.8" y2="1">
+            <stop offset="0" stop-color="#ffdcbb"/>
+            <stop offset=".55" stop-color="#f6bd90"/>
+            <stop offset="1" stop-color="#d9986a"/>
           </linearGradient>
-          <linearGradient id="axolotl-fin" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#ffc1d4" stop-opacity=".9"/>
-            <stop offset="1" stop-color="#d96f98" stop-opacity=".45"/>
+          <linearGradient id="fencer-hair-fill" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#8a5231"/>
+            <stop offset="1" stop-color="#43251a"/>
           </linearGradient>
-          <linearGradient id="axolotl-fabric" x1="0" y1="0" x2="1" y2="1">
+          <linearGradient id="fencer-fabric" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stop-color="#fffdf9"/>
             <stop offset="1" stop-color="#ccd9ee"/>
           </linearGradient>
         </defs>
-        <circle class="axolotl-halo" cx="164" cy="137" r="112"/>
-        <ellipse class="axolotl-shadow" cx="155" cy="252" rx="105" ry="8"/>
-        <path class="axolotl-ripple" d="M43 246h27m178 0h29"/>
-        <path class="axolotl-tail-fin" d="M133 190c-31 2-45-17-72-30 2 15 8 25 17 32-9 8-13 19-14 34 22-13 42-20 70-15z"/>
-        <path class="axolotl-tail" d="M136 190c-25 5-45-3-68-24 2 27 25 42 70 33"/>
-        <path class="axolotl-tail-detail" d="M77 177q22 20 55 18m-50 11q20-10 47-9"/>
-        <path class="axolotl-leg" d="M143 205c-17 13-32 26-53 35m82-34 35 13 16 25"/>
-        <path class="axolotl-shoe" d="M88 232q-7 3-14 7l-8 2q-5 7 2 9h31l1-13zm129 7-2 10q0 3 5 3h27q3-6-5-8l-13-9z"/>
-        <path class="axolotl-shoe-detail" d="M69 246h28m122 9h25m-158-16 5 3m134-1 6 2"/>
-        <path class="axolotl-arm" d="M125 159q-17 8-26 0l-8-18"/>
-        <path class="axolotl-hand" d="M94 143q-13 0-14-9t8-7q9 0 10 10"/>
-        <path class="axolotl-jacket" d="M132 142q17-9 35 0c13 3 25 10 31 18l-16 19 5 22q-29 18-66 2l3-24-16-14q7-16 24-23z"/>
-        <path class="axolotl-sleeve" d="M180 148q12 0 24 7l28-9 6 17-32 14q-8 2-17-3"/>
-        <path class="axolotl-cuff" d="m227 147 7-2 7 17-8 3z"/>
-        <path class="axolotl-jacket-detail" d="M168 151q-6 17-21 25l-4 29m-19-8q31 12 60-1m-65-29 9 9m67-20 8 12"/>
-        <path class="axolotl-collar" d="M134 140v12q15 10 32 0v-12"/>
-        <path class="axolotl-gill" d="M91 88 65 59m26 39L53 88m40 27-32 9m133-36 22-29m-20 44 34-13m-34 29 31 10"/>
-        <path class="axolotl-gill-fronds" d="m76 71-3-16m3 16-15-4m24 13-1-17m1 17-17-2M68 94l-9-12m18 15-9 10m9-10 4-13m-7 38-12-7m19 4-5 13m132-62 1-16m-1 16 15-5m-21 14 1-16m0 16 14-3m-1 20 11-12m-21 16 8 11m-8-11-3-13m19 37 12-6m-22 2 7 13"/>
-        <path class="axolotl-gill-filaments" d="m70 65 8-8m-12 5-1-10m-3 30 9-2m-14-2-8-7m12 41 9-7m-12 11-9 1m159-58 7-10m-4 13 13-3m-18 23 11-7m-4 11 13 1m-20 19 11-10m-7 16 13 4"/>
-        <path class="axolotl-body" d="M78 103c2-27 31-43 72-43s69 17 70 44c1 25-27 42-71 42s-73-17-71-43z"/>
-        <path class="axolotl-bow" d="M160 68c-12-13-22-6-15 2l15 7 15-7c7-8-3-15-15-2z"/>
-        <circle class="axolotl-bow-knot" cx="160" cy="69" r="3.5"/>
-        <path class="axolotl-speckles" d="M95 91q2-2 4 0m13-13q2-2 4 0m17 7q2-2 4 0m43-1q2-2 4 0m18 12q2-2 4 0m-99 38q2-2 4 0m77-1q2-2 4 0"/>
-        <ellipse class="axolotl-cheek" cx="111" cy="119" rx="11" ry="6"/>
-        <ellipse class="axolotl-cheek" cx="182" cy="119" rx="11" ry="6"/>
-        <ellipse class="axolotl-eye" cx="119" cy="104" rx="6" ry="7"/>
-        <ellipse class="axolotl-eye" cx="178" cy="104" rx="6" ry="7"/>
-        <path class="axolotl-eye-shine" d="M117 101h2m57 0h2m-57 8h1m57 0h1"/>
-        <path class="axolotl-nostril" d="M139 116q2-2 4 0m8 0q2-2 4 0"/>
-        <path class="axolotl-smile" d="M132 121q13 12 26 0"/>
-        <path class="axolotl-grip" d="m237 154 15-5"/>
-        <path class="axolotl-hand" d="M238 148q-7-4-9 2t3 10q5 3 9-2l4-4q1-5-4-5"/>
-        <path class="axolotl-foil" d="M253 148 310 125"/>
-        <ellipse class="axolotl-guard" cx="252" cy="150" rx="4" ry="12" transform="rotate(-22 252 150)"/>
-        <path class="axolotl-foil-tip" d="m309 125 3-1"/>
+        <circle class="fencer-halo" cx="164" cy="137" r="112"/>
+        <ellipse class="fencer-shadow" cx="155" cy="252" rx="105" ry="8"/>
+        <path class="fencer-sparkle" d="M43 246h27m178 0h29M62 96v10m-5-5h10m196-36v10m-5-5h10"/>
+        <path class="fencer-leg" d="M143 205c-17 13-32 26-53 35m82-34 35 13 16 25"/>
+        <path class="fencer-shoe" d="M88 232q-7 3-14 7l-8 2q-5 7 2 9h31l1-13zm129 7-2 10q0 3 5 3h27q3-6-5-8l-13-9z"/>
+        <path class="fencer-shoe-detail" d="M69 246h28m122 9h25m-158-16 5 3m134-1 6 2"/>
+        <path class="fencer-arm" d="M125 159q-17 8-26 0l-8-18"/>
+        <path class="fencer-hand" d="M94 143q-13 0-14-9t8-7q9 0 10 10"/>
+        <path class="fencer-jacket" d="M122 136q28-11 57 0c12 5 19 13 21 23l-6 43q-39 16-86 2l-5-45q4-16 19-23z"/>
+        <path class="fencer-sleeve" d="M180 148q12 0 24 7l28-9 6 17-32 14q-8 2-17-3"/>
+        <path class="fencer-cuff" d="m227 147 7-2 7 17-8 3z"/>
+        <path class="fencer-jacket-detail" d="M150 141v62m-30-52 10 11m60-11-10 11m-36 55q18 5 36 0"/>
+        <path class="fencer-belt" d="M110 183q40 15 84 0l-2 14q-40 15-80 0z"/>
+        <path class="fencer-collar" d="M133 133v11q17 11 34 0v-11"/>
+        <ellipse class="fencer-ear" cx="110" cy="104" rx="8" ry="10"/>
+        <ellipse class="fencer-ear" cx="190" cy="104" rx="8" ry="10"/>
+        <ellipse class="fencer-head" cx="150" cy="100" rx="40" ry="42"/>
+        <path class="fencer-hair" d="M110 82q10-30 40-30t40 30q3 10 1 19-12-16-41-16t-41 16q-2-9 1-19z"/>
+        <path class="fencer-hair-detail" d="M124 72q12-12 26-13m14 2q10 4 16 13"/>
+        <path class="fencer-headband" d="M112 83q38 15 76 0l3 13q-40 16-82 0z"/>
+        <path class="fencer-headband-detail" d="M118 88q32 11 64 0"/>
+        <path class="fencer-brow" d="M124 95q9-6 18-1m16 0q9-5 18 1"/>
+        <ellipse class="fencer-eye" cx="133" cy="107" rx="6" ry="7"/>
+        <ellipse class="fencer-eye" cx="167" cy="107" rx="6" ry="7"/>
+        <path class="fencer-eye-shine" d="M131 104h2m34 0h2m-36 7h1m34 0h1"/>
+        <ellipse class="fencer-cheek" cx="118" cy="118" rx="10" ry="6"/>
+        <ellipse class="fencer-cheek" cx="182" cy="118" rx="10" ry="6"/>
+        <path class="fencer-freckles" d="M114 114q2-2 4 0m62 0q2-2 4 0m-66 8q2-2 4 0m62 0q2-2 4 0"/>
+        <path class="fencer-nose" d="M147 116q3 3 6 0"/>
+        <path class="fencer-smile" d="M137 124q13 12 26 0"/>
+        <path class="fencer-grip" d="m237 154 15-5"/>
+        <path class="fencer-hand" d="M238 148q-7-4-9 2t3 10q5 3 9-2l4-4q1-5-4-5"/>
+        <path class="fencer-foil" d="M253 148 310 125"/>
+        <ellipse class="fencer-guard" cx="252" cy="150" rx="4" ry="12" transform="rotate(-22 252 150)"/>
+        <path class="fencer-foil-tip" d="m309 125 3-1"/>
       </svg>
     </section>
     <section id="games" class="games" aria-labelledby="games-heading" tabindex="-1">

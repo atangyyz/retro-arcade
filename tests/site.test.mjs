@@ -82,12 +82,12 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(html, /<h1 id="welcome">Retro<br><span>Arcade\.<\/span><\/h1>/);
   assert.doesNotMatch(html, /\bgift\b/i);
   assert.doesNotMatch(html, /Miles/i);
-  assert.match(html, /fencing axolotl/);
+  assert.match(html, /fencing retro kid/);
   assert.match(html, /BUILT FOR ARCADE FANS/);
-  assert.match(html, /role="img" aria-labelledby="axolotl-title"/);
-  assert.match(html, /<title id="axolotl-title">A cute pink axolotl with feathery external gills and a finned tail/);
-  assert.match(html, /class="axolotl-leg"/);
-  assert.match(html, /class="axolotl-foil"/);
+  assert.match(html, /role="img" aria-labelledby="fencer-title"/);
+  assert.match(html, /<title id="fencer-title">A retro arcade kid with a bowl cut and sweatband/);
+  assert.match(html, /class="fencer-leg"/);
+  assert.match(html, /class="fencer-foil"/);
   assert.match(html, /06 CLASSICS \/ FREE PLAY/);
   assert.match(html, /SIX GAMES\./);
   assert.doesNotMatch(html, /five (?:arcade classics|games)/i);
@@ -106,24 +106,24 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(gauntlet[0], /id="gauntlet-controls"/);
 });
 
-test('homepage styles its arcade theme and keeps the axolotl responsive', async () => {
+test('homepage styles its arcade theme and keeps the mascot responsive', async () => {
   const css = await read('assets/arcade.css');
-  assert.match(css, /\.axolotl-art\s*\{/);
-  assert.match(css, /\.axolotl-foil\s*\{/);
-  assert.match(css, /@media \(max-width: 600px\)[\s\S]*\.axolotl-art/);
+  assert.match(css, /\.fencer-art\s*\{/);
+  assert.match(css, /\.fencer-foil\s*\{/);
+  assert.match(css, /@media \(max-width: 600px\)[\s\S]*\.fencer-art/);
 });
 
-test('axolotl illustration includes tailored fencing gear and self-contained SVG details', async () => {
+test('retro kid illustration includes tailored fencing gear and self-contained SVG details', async () => {
   const html = await read('index.html');
   const css = await read('assets/arcade.css');
-  const art = html.match(/<svg class="axolotl-art"[\s\S]*?<\/svg>/)?.[0];
+  const art = html.match(/<svg class="fencer-art"[\s\S]*?<\/svg>/)?.[0];
   assert.ok(art);
   assert.match(art, /fencing in a fitted white jacket/);
-  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'tail', 'tail-fin', 'gill-fronds', 'gill-filaments', 'speckles', 'eye', 'guard', 'bow', 'bow-knot']) {
-    assert.match(art, new RegExp(`class="axolotl-${detail}"`));
-    assert.match(css, new RegExp(`\\.axolotl-${detail}\\b`));
+  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'belt', 'head', 'hair', 'hair-detail', 'headband', 'headband-detail', 'freckles', 'eye', 'guard', 'brow', 'smile']) {
+    assert.match(art, new RegExp(`class="fencer-${detail}"`));
+    assert.match(css, new RegExp(`\\.fencer-${detail}\\b`));
   }
-  for (const [, id] of css.matchAll(/url\(#(axolotl-[^)]+)\)/g)) {
+  for (const [, id] of css.matchAll(/url\(#(fencer-[^)]+)\)/g)) {
     assert.match(art, new RegExp(`id="${id}"`));
   }
   for (const [, path] of art.matchAll(/\bd="([^"]+)"/g)) {
