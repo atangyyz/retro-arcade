@@ -55,12 +55,12 @@ h1 span { color: var(--mint); }
 .choose-link { display: inline-block; margin-top: 14px; text-underline-offset: 6px; font-weight: bold; padding-block: 8px; }
 .choose-link span { color: var(--mint); }
 .mascots { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 28px; }
-.mascots-heading { color: var(--mint); font-size: 12px; letter-spacing: 3px; }
-.mascot-list { list-style: none; margin: 22px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.mascots-heading { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.mascot-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .mascot { --accent: #91f3cf; display: flex; align-items: center; gap: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 18px 20px; }
 .princess-plum { --accent: #ffb3dd; }
-.mascot-art { flex: 0 0 96px; height: 120px; border-radius: 8px; padding: 8px; background: repeating-linear-gradient(0deg, #ffffff03 0 1px, transparent 1px 5px), var(--preview-surface); }
-.mascot-art svg { width: 100%; height: 100%; }
+.mascot-art { flex: 0 0 96px; width: 96px; border-radius: 8px; padding: 8px; background: repeating-linear-gradient(0deg, #ffffff03 0 1px, transparent 1px 5px), var(--preview-surface); }
+.mascot-art svg { display: block; width: 100%; height: auto; }
 .mascot .skin { fill: #f2c69b; }
 .mascot .ink { fill: #241d2e; }
 .mascot .blush { fill: #ef9aa6; }
