@@ -28,6 +28,8 @@
 :root[data-theme="light"] .invaders { --accent: #6546a0; }
 :root[data-theme="light"] .asteroids { --accent: #9a4e08; }
 :root[data-theme="light"] .gauntlet { --accent: #8b5b09; }
+:root[data-theme="light"] .mascot { --accent: #176c58; }
+:root[data-theme="light"] .princess-plum { --accent: #a52d78; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; color: var(--text); background: radial-gradient(ellipse at 75% 5%, var(--glow-purple), transparent 45%), radial-gradient(ellipse at 15% 35%, var(--glow-teal), transparent 40%), var(--bg); }
@@ -52,6 +54,28 @@ h1 span { color: var(--mint); }
 .lede { max-width: 650px; font-family: system-ui, sans-serif; font-size: 18px; line-height: 1.7; color: var(--muted); }
 .choose-link { display: inline-block; margin-top: 14px; text-underline-offset: 6px; font-weight: bold; padding-block: 8px; }
 .choose-link span { color: var(--mint); }
+.mascots { margin-top: 48px; border-top: 1px solid var(--line); padding-top: 28px; }
+.mascots-heading { color: var(--mint); font-size: 12px; letter-spacing: 3px; }
+.mascot-list { list-style: none; margin: 22px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.mascot { --accent: #91f3cf; display: flex; align-items: center; gap: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 18px 20px; }
+.princess-plum { --accent: #ffb3dd; }
+.mascot-art { flex: 0 0 96px; height: 120px; border-radius: 8px; padding: 8px; background: repeating-linear-gradient(0deg, #ffffff03 0 1px, transparent 1px 5px), var(--preview-surface); }
+.mascot-art svg { width: 100%; height: 100%; }
+.mascot .skin { fill: #f2c69b; }
+.mascot .ink { fill: #241d2e; }
+.mascot .blush { fill: #ef9aa6; }
+.mascot .shoes { fill: #3b3347; }
+.pixel-pip .hair { fill: #6b4326; }
+.pixel-pip .shirt { fill: #2f7f6b; }
+.pixel-pip .dragon { fill: #b9ee85; }
+.pixel-pip .jeans { fill: #41548a; }
+.princess-plum .hair { fill: #c8863f; }
+.princess-plum .crown { fill: #f5bd62; }
+.princess-plum .gown { fill: #d978b4; }
+.princess-plum .sparkle { fill: #ffe9a0; }
+.mascot-copy h3 { font-size: 20px; margin: 0 0 8px; color: var(--accent); }
+.mascot-age { font-size: 11px; letter-spacing: 2px; color: var(--mint); margin: 0 0 10px; }
+.mascot-copy p:last-child { font-family: system-ui, sans-serif; font-size: 14px; line-height: 1.6; color: var(--muted); margin: 0; }
 .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
 h2 { font-size: 15px; letter-spacing: 2px; margin: 0; }
 .section-heading > span { color: var(--muted); font-size: 11px; }
@@ -100,6 +124,8 @@ footer { border-top: 1px solid var(--line); display: flex; justify-content: spac
   h1 { letter-spacing: -2px; }
   .section-heading { align-items: start; flex-direction: column; gap: 10px; }
   .game-grid { grid-template-columns: 1fr; gap: 20px; }
+  .mascot-list { grid-template-columns: 1fr; gap: 20px; }
+  .mascot { align-items: start; }
   .card-content { padding: 22px; }
   .player-note { align-items: start; padding: 18px; }
   footer { flex-direction: column; }
