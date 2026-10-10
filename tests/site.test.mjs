@@ -82,12 +82,9 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(html, /<h1 id="welcome">Retro<br><span>Arcade\.<\/span><\/h1>/);
   assert.doesNotMatch(html, /\bgift\b/i);
   assert.doesNotMatch(html, /Miles/i);
-  assert.match(html, /fencing retro kid/);
   assert.match(html, /BUILT FOR ARCADE FANS/);
-  assert.match(html, /role="img" aria-labelledby="fencer-title"/);
-  assert.match(html, /<title id="fencer-title">A retro arcade kid with a bowl cut and sweatband/);
-  assert.match(html, /class="fencer-leg"/);
-  assert.match(html, /class="fencer-foil"/);
+  assert.doesNotMatch(html, /fencer/i);
+  assert.doesNotMatch(html, /fencing/i);
   assert.match(html, /06 CLASSICS \/ FREE PLAY/);
   assert.match(html, /SIX GAMES\./);
   assert.doesNotMatch(html, /five (?:arcade classics|games)/i);
@@ -106,29 +103,9 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(gauntlet[0], /id="gauntlet-controls"/);
 });
 
-test('homepage styles its arcade theme and keeps the mascot responsive', async () => {
+test('homepage no longer ships a mascot illustration', async () => {
   const css = await read('assets/arcade.css');
-  assert.match(css, /\.fencer-art\s*\{/);
-  assert.match(css, /\.fencer-foil\s*\{/);
-  assert.match(css, /@media \(max-width: 600px\)[\s\S]*\.fencer-art/);
-});
-
-test('retro kid illustration includes tailored fencing gear and self-contained SVG details', async () => {
-  const html = await read('index.html');
-  const css = await read('assets/arcade.css');
-  const art = html.match(/<svg class="fencer-art"[\s\S]*?<\/svg>/)?.[0];
-  assert.ok(art);
-  assert.match(art, /fencing in a fitted white jacket/);
-  for (const detail of ['jacket', 'sleeve', 'collar', 'cuff', 'belt', 'head', 'hair', 'hair-detail', 'headband', 'headband-detail', 'freckles', 'eye', 'guard', 'brow', 'smile']) {
-    assert.match(art, new RegExp(`class="fencer-${detail}"`));
-    assert.match(css, new RegExp(`\\.fencer-${detail}\\b`));
-  }
-  for (const [, id] of css.matchAll(/url\(#(fencer-[^)]+)\)/g)) {
-    assert.match(art, new RegExp(`id="${id}"`));
-  }
-  for (const [, path] of art.matchAll(/\bd="([^"]+)"/g)) {
-    assert.match(path, /^[MmLlHhVvCcSsQqTtAaZz\d\s.,+-]+$/, 'Unexpected SVG path character');
-  }
+  assert.doesNotMatch(css, /fencer/i);
 });
 
 test('Snake exposes instructions, live status, touch controls and visible focus', async () => {

@@ -45,43 +45,13 @@ a:focus-visible, [tabindex="-1"]:focus-visible { outline: 3px solid var(--mint);
 .theme-toggle { border: 1px solid var(--line); border-radius: 999px; padding: 9px 13px; color: var(--text); background: var(--surface); font: inherit; font-size: 12px; cursor: pointer; }
 .theme-toggle:hover { border-color: var(--mint); }
 .theme-toggle:focus-visible { outline: 3px solid var(--mint); outline-offset: 3px; }
-.intro { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(240px, .9fr); align-items: center; gap: 32px; padding: 56px 0 64px; }
+.intro { padding: 56px 0 64px; }
 .eyebrow { color: var(--mint); font-size: 12px; letter-spacing: 3px; }
 h1 { font-size: clamp(36px, 6vw, 68px); line-height: 1.1; letter-spacing: -3px; margin: 22px 0; }
 h1 span { color: var(--mint); }
 .lede { max-width: 650px; font-family: system-ui, sans-serif; font-size: 18px; line-height: 1.7; color: var(--muted); }
 .choose-link { display: inline-block; margin-top: 14px; text-underline-offset: 6px; font-weight: bold; padding-block: 8px; }
 .choose-link span { color: var(--mint); }
-.fencer-art { display: block; width: min(100%, 360px); justify-self: center; overflow: visible; filter: drop-shadow(0 14px 30px #d875a52b); animation: fencer-bob 3.2s ease-in-out infinite; transform-origin: center; }
-@keyframes fencer-bob { 50% { transform: translateY(-5px) rotate(1deg); } }
-.fencer-halo { fill: #402c4c; stroke: #755278; stroke-width: 2; }
-.fencer-art path, .fencer-guard { stroke-linecap: round; stroke-linejoin: round; }
-.fencer-sparkle, .fencer-smile, .fencer-arm, .fencer-foil, .fencer-grip, .fencer-foil-tip, .fencer-leg, .fencer-jacket-detail, .fencer-headband-detail, .fencer-hair-detail, .fencer-brow, .fencer-nose, .fencer-shoe-detail, .fencer-eye-shine, .fencer-freckles { fill: none; }
-.fencer-shadow { fill: #080f20; opacity: .35; }
-.fencer-sparkle { stroke: #65d9c0; stroke-width: 3; opacity: .75; }
-.fencer-leg { stroke: #4f5f94; stroke-width: 15; }
-.fencer-shoe { fill: #755bd2; stroke: #c8b8ff; stroke-width: 2; }
-.fencer-shoe-detail { stroke: #eee8ff; stroke-width: 2; }
-.fencer-head, .fencer-ear, .fencer-hand { fill: url(#fencer-skin); stroke: #ffe0c6; stroke-width: 2; }
-.fencer-hair { fill: url(#fencer-hair-fill); stroke: #8a5231; stroke-width: 2; }
-.fencer-hair-detail { stroke: #b4784d; stroke-width: 3; opacity: .8; }
-.fencer-headband { fill: #ff6b8b; stroke: #ffd3de; stroke-width: 2; }
-.fencer-headband-detail { stroke: #65d9c0; stroke-width: 3; }
-.fencer-jacket, .fencer-sleeve, .fencer-collar { fill: url(#fencer-fabric); stroke: #a6b7d1; stroke-width: 2; }
-.fencer-cuff { fill: #e7edf8; stroke: #a6b7d1; stroke-width: 2; }
-.fencer-belt { fill: #755bd2; stroke: #c8b8ff; stroke-width: 2; }
-.fencer-jacket-detail { stroke: #a6b7d1; stroke-width: 1.5; }
-.fencer-cheek { fill: #e9757f; opacity: .45; }
-.fencer-freckles { stroke: #c9757d; stroke-width: 3; opacity: .7; }
-.fencer-eye { fill: #302033; stroke: #ffe8d6; stroke-width: 2; }
-.fencer-eye-shine { stroke: #fffdf9; stroke-width: 3; }
-.fencer-brow { stroke: #6b3f2a; stroke-width: 3; }
-.fencer-nose, .fencer-smile { stroke: #a4614a; stroke-width: 2; }
-.fencer-arm { stroke: #e7edf8; stroke-width: 16; }
-.fencer-foil { stroke: #e5f7ff; stroke-width: 2; }
-.fencer-guard { fill: #d8e4f2; stroke: #91a8c7; stroke-width: 2; }
-.fencer-grip { stroke: #755bd2; stroke-width: 5; }
-.fencer-foil-tip { stroke: #e5f7ff; stroke-width: 3; }
 .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
 h2 { font-size: 15px; letter-spacing: 2px; margin: 0; }
 .section-heading > span { color: var(--muted); font-size: 11px; }
@@ -126,8 +96,7 @@ footer { border-top: 1px solid var(--line); display: flex; justify-content: spac
   .masthead, main, footer { width: calc(100% - 32px); }
   .status { display: none; }
   .masthead-tools { gap: 0; }
-  .intro { grid-template-columns: 1fr; gap: 8px; padding: 44px 0; }
-  .fencer-art { width: min(82%, 300px); }
+  .intro { padding: 44px 0; }
   h1 { letter-spacing: -2px; }
   .section-heading { align-items: start; flex-direction: column; gap: 10px; }
   .game-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -137,7 +106,6 @@ footer { border-top: 1px solid var(--line); display: flex; justify-content: spac
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .fencer-art { animation: none; }
   .game-card { transition: none; }
   .game-card:hover { transform: none; }
 }
