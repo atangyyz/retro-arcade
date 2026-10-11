@@ -103,32 +103,15 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(gauntlet[0], /id="gauntlet-controls"/);
 });
 
-test('homepage no longer ships a mascot illustration', async () => {
-  const css = await read('assets/arcade.css');
-  assert.doesNotMatch(css, /fencer/i);
-});
-
-test('homepage shows the retro boy and girl mascots', async () => {
+test('homepage no longer ships mascot characters', async () => {
   const html = await read('index.html');
   const css = await read('assets/arcade.css');
-  const mascots = html.match(/<div class="mascots"[\s\S]*?<\/div>\s*<\/section>/);
-  assert.ok(mascots, 'Missing mascot section');
-  assert.match(mascots[0], /aria-labelledby="mascots-heading"/);
-  assert.match(mascots[0], /id="mascots-heading"/);
-  assert.equal([...mascots[0].matchAll(/class="mascot /g)].length, 2);
-  for (const [name, age, theme] of [['Pixel Pip', 'AGE 9', /dragon/i], ['Princess Plum', 'AGE 5', /crown/i]]) {
-    assert.match(mascots[0], new RegExp(`<h3>${name}</h3>`));
-    assert.match(mascots[0], new RegExp(age));
-    assert.match(mascots[0], theme);
+  for (const source of [html, css]) {
+    assert.doesNotMatch(source, /fencer/i);
+    assert.doesNotMatch(source, /mascot/i);
+    assert.doesNotMatch(source, /pixel[- ]pip/i);
+    assert.doesNotMatch(source, /princess|plum/i);
   }
-  assert.match(mascots[0], /hair down to her sparkly slippers/);
-  assert.equal([...mascots[0].matchAll(/<div class="mascot-art" aria-hidden="true">/g)].length, 2);
-  assert.equal([...mascots[0].matchAll(/<svg viewBox="0 0 64 80" shape-rendering="crispEdges" width="64" height="80"/g)].length, 2);
-  assert.doesNotMatch(mascots[0], /meet/i);
-  assert.match(css, /\.mascot-art svg \{[^}]*height: auto/);
-  assert.doesNotMatch(mascots[0], /<img|href=|src=/);
-  assert.match(css, /\.mascot-list \{[^}]*grid-template-columns/);
-  assert.match(css, /:root\[data-theme="light"\] \.princess-plum/);
 });
 
 test('Snake exposes instructions, live status, touch controls and visible focus', async () => {
