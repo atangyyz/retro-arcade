@@ -1,7 +1,7 @@
 # Retro Arcade
 
-Six playable browser classics in one static site: **Pong**, **Frogger**,
-**Space Invaders**, **Asteroids**, **Snake**, and **Gauntlet**. Choose a game on the homepage, play,
+Seven playable browser games in one static site: **Pong**, **Frogger**,
+**Space Invaders**, **Asteroids**, **Snake**, **Gauntlet**, and **Tilt Dodger**. Choose a game on the homepage, play,
 then use **← Back to Arcade** to choose another.
 
 ## Run locally
@@ -24,13 +24,13 @@ Run from the repository root:
 
 ```sh
 npm run check       # Syntax-check all game entry points and engines
-npm test            # Site navigation checks, then all six game test suites
+npm test            # Site navigation checks, then all seven game test suites
 npm run test:site   # Homepage, return links, assets, Pages subpaths, focus styles
-npm run test:games  # All six game suites, including Snake and Gauntlet simulation tests
+npm run test:games  # All seven game suites, including Tilt Dodger simulation and control tests
 ```
 
 To test just one game, use `npm --prefix games/pong test` (replace `pong`
-with `frogger`, `space-invaders`, `asteroids`, `snake`, or `gauntlet`). Asteroids also retains
+with `frogger`, `space-invaders`, `asteroids`, `snake`, `gauntlet`, or `tilt-dodger`). Asteroids also retains
 its original `npm --prefix games/asteroids run check` command; Snake has
 `npm --prefix games/snake run check`.
 No framework, bundler, backend, or external test dependencies are needed.
@@ -45,6 +45,7 @@ No framework, bundler, backend, or external test dependencies are needed.
 | Asteroids | `games/asteroids/index.html` | [atangyyz/retro-asteroids](https://github.com/atangyyz/retro-asteroids) |
 | Snake | `games/snake/index.html` | Built for this arcade |
 | Gauntlet | `games/gauntlet/index.html` | Built for this arcade |
+| Tilt Dodger | `games/tilt-dodger/index.html` | Built for this arcade |
 
 The four original games were imported from the source projects' `main` branches
 on 2026-10-05. Their folders retain the complete source snapshots, including READMEs,
@@ -67,6 +68,23 @@ Gauntlet is self-contained in `games/gauntlet/`: explore with the arrow keys /
 WASD or direction buttons, attack with Space or the Attack button, collect
 treasure and potions, find the key, and reach the exit. Its grid-based engine
 and deterministic tests are independent of the other games.
+
+Tilt Dodger is self-contained in `games/tilt-dodger/`: drag anywhere on its
+portrait canvas to steer a spaceship, dodge falling asteroid rows, and collect
+stars. Arrow keys / A and D also steer. Survival earns 10 points per second;
+each star adds 50. Asteroids accelerate and rows arrive more frequently, but
+each row leaves a two-lane gap that shifts by at most one lane, preserving a
+reachable escape route. Best scores persist locally when storage is available.
+Use the large Start, Pause / Resume, and Retry controls; leaving the page
+pauses the round and requires manual resume.
+
+Touch steering is always available and requires no sensor permission. Optional
+tilt steering requires a secure context (HTTPS or localhost), a supported
+orientation sensor, and, on some phones, permission after tapping Enable tilt.
+Hold the phone comfortably during calibration; recalibrate after changing your
+grip or rotating the screen. Denied permission or missing sensor readings leave
+touch play available. Real sensor behavior should also be checked on a phone.
+The DOM-free simulation tests include a 90-second safe-route run.
 
 The homepage lives in `index.html`; `assets/arcade.css` styles it and
 `assets/navigation.css` styles only the shared return links. Game implementations

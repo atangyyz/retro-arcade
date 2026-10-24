@@ -1,0 +1,11 @@
+{
+  "name": "retro-tilt-dodger",
+  "version": "1.0.0",
+  "description": "A touch-first portrait survival game with optional tilt steering.",
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check game.js && node --check main.js"
+  },
+  "type": "module",
+  "private": true
+}

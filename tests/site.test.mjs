@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
-const games = ['pong', 'frogger', 'space-invaders', 'asteroids', 'snake', 'gauntlet'];
+const games = ['pong', 'frogger', 'space-invaders', 'asteroids', 'snake', 'gauntlet', 'tilt-dodger'];
 const read = path => readFile(new URL(path, root), 'utf8');
 
 test('homepage offers exactly one same-tab link to each playable game', async () => {
@@ -75,9 +75,9 @@ test('homepage theme toggle defaults to dark and supports a saved light theme', 
   assert.match(script, /toggle\.addEventListener\('click'/);
 });
 
-test('homepage copy reflects all six games and includes inline game previews', async () => {
+test('homepage copy reflects all seven games and includes inline game previews', async () => {
   const html = await read('index.html');
-  assert.match(html, /Six arcade classics/);
+  assert.match(html, /Seven arcade games/);
   assert.match(html, /<title>Retro Arcade/);
   assert.match(html, /<h1 id="welcome">Retro<br><span>Arcade\.<\/span><\/h1>/);
   assert.doesNotMatch(html, /\bgift\b/i);
@@ -85,8 +85,8 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(html, /BUILT FOR ARCADE FANS/);
   assert.doesNotMatch(html, /fencer/i);
   assert.doesNotMatch(html, /fencing/i);
-  assert.match(html, /06 CLASSICS \/ FREE PLAY/);
-  assert.match(html, /SIX GAMES\./);
+  assert.match(html, /07 GAMES \/ FREE PLAY/);
+  assert.match(html, /SEVEN GAMES\./);
   assert.doesNotMatch(html, /five (?:arcade classics|games)/i);
   const grid = html.match(/<div class="game-grid">([\s\S]*?)<\/section>/);
   assert.ok(grid);
@@ -101,6 +101,11 @@ test('homepage copy reflects all six games and includes inline game previews', a
   assert.match(gauntlet[0], /<svg viewBox=/);
   assert.match(gauntlet[0], /id="gauntlet-description"/);
   assert.match(gauntlet[0], /id="gauntlet-controls"/);
+  const dodger = grid[1].match(/<a class="game-card tilt-dodger"[\s\S]*?<\/a>/);
+  assert.ok(dodger);
+  assert.match(dodger[0], /<svg viewBox=/);
+  assert.match(dodger[0], /id="tilt-dodger-description"/);
+  assert.match(dodger[0], /id="tilt-dodger-controls"/);
 });
 
 test('homepage no longer ships mascot characters', async () => {
