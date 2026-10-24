@@ -30,7 +30,7 @@ test('ready, pause, resume, and game over gate simulation', () => {
   assert.equal(game.status, 'gameover');
 });
 
-test('target steering is bounded and speed-limited for touch and tilt', () => {
+test('target steering is bounded and speed-limited for tilt', () => {
   const game = createGame();
   startGame(game);
   setTarget(game, -100);

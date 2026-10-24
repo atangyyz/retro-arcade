@@ -23,7 +23,7 @@
     </section>
     <div class="flight-deck">
       <canvas id="game" width="360" height="540" tabindex="0" aria-label="Tilt Dodger game area" aria-describedby="instructions game-status">
-        Dodge meteors and collect stars. Use the Start button, then drag or use the arrow keys to steer.
+        Dodge meteors and collect stars. Use the Start button, allow motion access, then tilt your device to steer.
       </canvas>
       <div id="overlay" class="overlay">
         <div class="overlay-card">
@@ -37,13 +37,13 @@
       <button id="start" class="primary" type="button">Start flight</button>
       <button id="pause" type="button" disabled>Pause</button>
     </div>
-    <div class="steering-controls" aria-label="Steering options">
-      <button id="tilt" type="button" aria-pressed="false">Enable tilt</button>
+    <div class="steering-controls" aria-label="Flight options">
       <button id="recalibrate" type="button" disabled>Recalibrate</button>
+      <button id="exit-flight" class="exit-flight" type="button">Exit full view</button>
     </div>
     <p id="game-status" class="status" role="status" aria-live="polite" aria-atomic="true">Ready to fly.</p>
-    <p id="control-status" class="control-status" role="status" aria-live="polite" aria-atomic="true">Drag to steer · tilt is optional.</p>
-    <p id="instructions" class="instructions">Drag to steer · ← → / A D · P pauses.<br>Focus sky + Enter starts. Tilt centers at your hold angle.</p>
+    <p id="control-status" class="control-status" role="status" aria-live="polite" aria-atomic="true">Tilt-only steering · motion access required.</p>
+    <p id="instructions" class="instructions">Tap Start, allow motion access, then tilt left or right to steer.<br>Hold comfortably to center tilt. Recalibrate to adjust your grip. P pauses.<br>Flight fills the screen; Exit full view returns here and pauses.</p>
     <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
   </main>
 </body>

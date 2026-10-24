@@ -1,9 +1,3 @@
-export function pointerTarget(clientX, rect, width) {
-  if (!Number.isFinite(clientX) || !Number.isFinite(rect.left)
-    || !Number.isFinite(rect.width) || rect.width <= 0) return null;
-  return Math.max(0, Math.min(width, (clientX - rect.left) * width / rect.width));
-}
-
 export function orientationAxis(event, angle = 0) {
   if (!Number.isFinite(event.beta) || !Number.isFinite(event.gamma)) return null;
   const radians = (Number.isFinite(angle) ? angle : 0) * Math.PI / 180;
@@ -28,11 +22,9 @@ export function writeBest(win, best) {
 }
 
 export function installControls({
-  win, doc, canvas, tiltButton, recalibrateButton, width, moveSpeed,
-  getX, isPlaying, onTarget, onPause, onStart, onStatus,
+  win, doc, canvas, recalibrateButton, width,
+  getX, isPlaying, onTarget, onPause, onStart, onStatus, onReady, onUnavailable,
 }) {
-  let pointer = null;
-  const keys = new Set();
   const removers = [];
   let generation = 0;
   let pending = false;
@@ -48,9 +40,7 @@ export function installControls({
     removers.push(() => target.removeEventListener(type, handler, options));
   }
   function buttons() {
-    tiltButton.textContent = pending ? 'Cancel tilt' : enabled ? 'Disable tilt' : 'Enable tilt';
-    tiltButton.setAttribute('aria-pressed', String(enabled));
-    recalibrateButton.disabled = !enabled;
+    recalibrateButton.disabled = !enabled || baseline === null;
   }
   function calibrate() {
     baseline = axis;
@@ -66,7 +56,10 @@ export function installControls({
     timeout = null;
     win.removeEventListener('deviceorientation', orientation);
     buttons();
-    if (message) onStatus(message);
+    if (message) {
+      onStatus(message);
+      onUnavailable();
+    }
   }
   function orientation(event) {
     if (!enabled || doc.hidden) return;
@@ -80,40 +73,46 @@ export function installControls({
     }
     if (baseline === null) {
       calibrate();
-      onStatus('Tilt ready · drag always works.');
+      buttons();
+      onStatus('Tilt ready · tilt left or right to steer.');
+      onReady();
     }
   }
   function requestTilt() {
-    if (enabled || pending) {
-      stopTilt('Touch steering · tilt off.');
+    if (enabled && baseline !== null) {
+      onReady();
       return;
     }
+    if (enabled || pending) return;
     if (!available) {
-      onStatus('Tilt unavailable here · drag to steer.');
+      stopTilt('Tilt requires HTTPS and a device with an orientation sensor.');
       return;
     }
-    if (doc.hidden) return;
+    if (doc.hidden) {
+      stopTilt('Tilt off while away. Tap Start or Resume to enable it again.');
+      return;
+    }
     const token = ++generation;
     pending = true;
     buttons();
-    onStatus('Requesting tilt · touch still works.');
+    onStatus('Allow motion access, then hold your device comfortably.');
     let permission;
     try {
       // Keep this call synchronous with the click for iOS user activation.
       permission = typeof win.DeviceOrientationEvent.requestPermission === 'function'
         ? win.DeviceOrientationEvent.requestPermission() : 'granted';
     } catch {
-      stopTilt('Tilt could not start · drag to steer.');
+      stopTilt('Tilt could not start. Tap Start or Resume to try again.');
       return;
     }
     Promise.resolve(permission).then(result => {
       if (token !== generation) return;
       if (doc.hidden) {
-        stopTilt('Tilt off while away · drag or enable again.');
+        stopTilt('Tilt off while away. Tap Start or Resume to enable it again.');
         return;
       }
       if (result !== 'granted') {
-        stopTilt('Tilt permission denied · drag to steer.');
+        stopTilt('Motion permission denied. Allow motion access in your browser, then try again.');
         return;
       }
       pending = false;
@@ -122,48 +121,16 @@ export function installControls({
       onStatus('Hold comfortably · waiting for tilt.');
       win.addEventListener('deviceorientation', orientation);
       timeout = win.setTimeout(() => {
-        stopTilt('No tilt readings · drag to steer.');
+        stopTilt('No tilt readings. Use a device with motion sensors and try again.');
       }, 3500);
     }, () => {
-      if (token === generation) stopTilt('Tilt permission denied · drag to steer.');
+      if (token === generation) stopTilt('Motion permission denied. Allow motion access in your browser, then try again.');
     });
   }
-  function endPointer(event) {
-    if (event.pointerId !== pointer) return;
-    const old = pointer;
-    pointer = null;
-    calibrate();
-    if (canvas.hasPointerCapture?.(old)) canvas.releasePointerCapture(old);
-  }
-  function clearInput() {
-    keys.clear();
-    if (pointer !== null) endPointer({ pointerId: pointer });
-  }
   function suspend() {
-    clearInput();
     onPause();
-    if (enabled || pending) stopTilt('Tilt off while away · drag or enable again.');
+    if (enabled || pending) stopTilt('Tilt off while away. Tap Start or Resume to enable it again.');
   }
-  listen(canvas, 'pointerdown', event => {
-    if (pointer !== null || (event.button !== undefined && event.button !== 0)) return;
-    event.preventDefault();
-    canvas.focus({ preventScroll: true });
-    pointer = event.pointerId;
-    keys.clear();
-    try { canvas.setPointerCapture(pointer); } catch { /* Window pointerup is a fallback. */ }
-    const target = pointerTarget(event.clientX, canvas.getBoundingClientRect(), width);
-    if (target !== null) onTarget(target);
-  });
-  listen(canvas, 'pointermove', event => {
-    if (event.pointerId !== pointer) return;
-    event.preventDefault();
-    const target = pointerTarget(event.clientX, canvas.getBoundingClientRect(), width);
-    if (target !== null) onTarget(target);
-  });
-  listen(win, 'pointerup', endPointer);
-  listen(win, 'pointercancel', endPointer);
-  listen(canvas, 'lostpointercapture', endPointer);
-  listen(canvas, 'blur', clearInput);
   listen(win, 'keydown', event => {
     const target = event.target;
     if (target && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(target.tagName)) return;
@@ -172,45 +139,40 @@ export function installControls({
       if (!event.repeat) onPause(true);
       event.preventDefault();
     } else if (doc.activeElement === canvas) {
-      if (['arrowleft', 'arrowright', 'a', 'd'].includes(key)) {
-        keys.add(key);
-        event.preventDefault();
-      } else if (key === 'enter' && !event.repeat) {
+      if (key === 'enter' && !event.repeat) {
         event.preventDefault();
         onStart();
       }
     }
   });
-  listen(win, 'keyup', event => keys.delete(event.key.toLowerCase()));
   listen(win, 'blur', suspend);
   listen(doc, 'visibilitychange', () => { if (doc.hidden) suspend(); });
   const rotate = () => {
     axis = baseline = null;
     smoothed = 0;
+    buttons();
     if (enabled) {
+      onPause();
       onStatus('Screen rotated · hold to recalibrate.');
       if (timeout !== null) win.clearTimeout(timeout);
-      timeout = win.setTimeout(() => stopTilt('No tilt readings · drag to steer.'), 3500);
+      timeout = win.setTimeout(() => stopTilt('No tilt readings. Use a device with motion sensors and try again.'), 3500);
     }
   };
   listen(win, 'orientationchange', rotate);
   if (win.screen?.orientation?.addEventListener) listen(win.screen.orientation, 'change', rotate);
-  listen(tiltButton, 'click', requestTilt);
   listen(recalibrateButton, 'click', () => {
     if (!enabled) return;
     calibrate();
     onStatus(axis === null ? 'Hold comfortably · waiting for tilt.' : 'Tilt centered at your hold angle.');
   });
   buttons();
-  if (!available) onStatus('Touch steering · tilt unavailable here.');
+  if (!available) onStatus('Tilt requires HTTPS and a device with an orientation sensor.');
   return {
+    requestTilt,
+    cancel() { stopTilt(); },
     update(dt) {
-      if (!isPlaying() || pointer !== null || !Number.isFinite(dt) || dt <= 0) return;
-      const direction = Number(keys.has('arrowright') || keys.has('d'))
-        - Number(keys.has('arrowleft') || keys.has('a'));
-      if (keys.size) {
-        onTarget(getX() + direction * moveSpeed * Math.min(dt, 0.05));
-      } else if (enabled && axis !== null && baseline !== null) {
+      if (!isPlaying() || !Number.isFinite(dt) || dt <= 0) return;
+      if (enabled && axis !== null && baseline !== null) {
         const delta = ((axis - baseline + 540) % 360) - 180;
         const desired = Math.abs(delta) <= 2 ? 0 : Math.sign(delta) * (Math.abs(delta) - 2);
         smoothed += (desired - smoothed) * (1 - Math.exp(-8 * Math.min(dt, 0.05)));
@@ -218,11 +180,9 @@ export function installControls({
       }
     },
     reset() {
-      clearInput();
       calibrate();
     },
     destroy() {
-      clearInput();
       stopTilt();
       removers.forEach(remove => remove());
     },
