@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090e20">
+  <title>Tilt Dodger · Retro Arcade</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b1127'/%3E%3Cpath d='M16 5 28 27 16 23 4 27Z' fill='%2377f4da'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../../assets/navigation.css">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js"></script>
+</head>
+<body>
+  <main class="arcade">
+    <header class="heading">
+      <div><p class="eyebrow">RETRO ARCADE / 07</p><h1>Tilt <span>Dodger</span></h1></div>
+      <span class="badge" aria-hidden="true">✦ SURVIVE</span>
+    </header>
+    <section class="scoreboard" aria-label="Scores">
+      <div><span>SCORE</span><strong id="score">0</strong></div>
+      <div><span>STARS</span><strong id="stars">0</strong></div>
+      <div><span>BEST</span><strong id="best">0</strong></div>
+    </section>
+    <div class="flight-deck">
+      <canvas id="game" width="360" height="540" tabindex="0" aria-label="Tilt Dodger game area" aria-describedby="instructions game-status">
+        Dodge meteors and collect stars. Use the Start button, then drag or use the arrow keys to steer.
+      </canvas>
+      <div id="overlay" class="overlay">
+        <div class="overlay-card">
+          <span class="overlay-icon" aria-hidden="true">✦</span>
+          <h2 id="overlay-title">Find your flow.</h2>
+          <p id="overlay-copy">Dodge meteors. Chase stars.<br>Stay in the sky.</p>
+        </div>
+      </div>
+    </div>
+    <div class="primary-controls">
+      <button id="start" class="primary" type="button">Start flight</button>
+      <button id="pause" type="button" disabled>Pause</button>
+    </div>
+    <div class="steering-controls" aria-label="Steering options">
+      <button id="tilt" type="button" aria-pressed="false">Enable tilt</button>
+      <button id="recalibrate" type="button" disabled>Recalibrate</button>
+    </div>
+    <p id="game-status" class="status" role="status" aria-live="polite" aria-atomic="true">Ready to fly.</p>
+    <p id="control-status" class="control-status" role="status" aria-live="polite" aria-atomic="true">Drag to steer · tilt is optional.</p>
+    <p id="instructions" class="instructions">Drag to steer · ← → / A D · P pauses.<br>Focus sky + Enter starts. Tilt centers at your hold angle.</p>
+    <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
+  </main>
+</body>
+</html>
