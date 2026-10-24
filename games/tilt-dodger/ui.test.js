@@ -39,11 +39,13 @@ function browser() {
   const elements = Object.fromEntries(ids.map(id => [
     id, new Target(['start', 'pause', 'tilt', 'recalibrate'].includes(id) ? 'BUTTON' : 'DIV'),
   ]));
+  for (const element of Object.values(elements)) {
+    element.focus = options => { doc.activeElement = element; element.focusOptions = options; };
+  }
   const canvas = elements.game;
   canvas.tagName = 'CANVAS';
   const captures = new Set();
   canvas.getBoundingClientRect = () => ({ left: 20, width: 180 });
-  canvas.focus = options => { doc.activeElement = canvas; canvas.focusOptions = options; };
   canvas.setPointerCapture = id => captures.add(id);
   canvas.hasPointerCapture = id => captures.has(id);
   canvas.releasePointerCapture = id => {
@@ -434,10 +436,11 @@ test('Resume restores canvas focus and keyboard steering without stealing focus 
   f.elements.start.emit('click');
   f.win.frame(0);
   f.win.frame(16);
-  f.doc.activeElement = f.elements.pause;
+  f.elements.pause.focus();
   f.elements.pause.emit('click');
   assert.equal(f.game.status, 'paused');
   assert.equal(f.doc.activeElement, f.elements.pause);
+  f.elements.pause.focus();
   f.elements.pause.emit('click');
   assert.equal(f.game.status, 'playing');
   assert.equal(f.doc.activeElement, f.canvas);
