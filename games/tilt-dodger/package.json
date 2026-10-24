@@ -4,7 +4,7 @@
   "description": "A touch-first portrait survival game with optional tilt steering.",
   "scripts": {
     "test": "node --test",
-    "check": "node --check game.js && node --check main.js"
+    "check": "node --check game.js && node --check main.js && node --check controls.js"
   },
   "type": "module",
   "private": true
