@@ -73,22 +73,26 @@ export class Game {
     if (this.status === 'paused') this.status = 'playing';
   }
 
-  update(dt, { left = false, right = false, fire = false } = {}) {
+  // targetX is an optional analog ship-center target (tilt); it overrides left/right.
+  update(dt, { left = false, right = false, fire = false, targetX = null } = {}) {
     if (this.status !== 'playing' || !Number.isFinite(dt) || dt <= 0) return;
     // Bound stalled frames, then subdivide movement and use swept projectile hits.
     let remaining = Math.min(dt, 0.1);
     while (remaining > 1e-10 && this.status === 'playing') {
       const step = Math.min(STEP, remaining);
-      this._step(step, left, right, fire);
+      this._step(step, left, right, fire, targetX);
       remaining -= step;
     }
   }
 
-  _step(dt, left, right, fire) {
+  _step(dt, left, right, fire, targetX) {
     const player = this.player;
     player.invulnerable = Math.max(0, player.invulnerable - dt);
-    player.x = Math.max(0, Math.min(WIDTH - player.w,
-      player.x + (Number(right) - Number(left)) * PLAYER_SPEED * dt));
+    const reach = PLAYER_SPEED * dt;
+    const move = Number.isFinite(targetX)
+      ? Math.max(-reach, Math.min(reach, targetX - player.w / 2 - player.x))
+      : (Number(right) - Number(left)) * reach;
+    player.x = Math.max(0, Math.min(WIDTH - player.w, player.x + move));
     this._fireCooldown = Math.max(0, this._fireCooldown - dt);
 
     if (this.waveDelay > 0) {

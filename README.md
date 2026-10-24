@@ -1,7 +1,7 @@
 # Retro Arcade
 
-Seven playable browser games in one static site: **Pong**, **Frogger**,
-**Space Invaders**, **Asteroids**, **Snake**, **Gauntlet**, and **Tilt Dodger**. Choose a game on the homepage, play,
+Four playable browser games in one static site: **Tilt Dodger**,
+**Space Invaders**, **Asteroids**, and **Frogger**. Choose a game on the homepage, play,
 then use **← Back to Arcade** to choose another.
 
 ## Run locally
@@ -24,30 +24,26 @@ Run from the repository root:
 
 ```sh
 npm run check       # Syntax-check all game entry points and engines
-npm test            # Site navigation checks, then all seven game test suites
+npm test            # Site navigation checks, then all four game test suites
 npm run test:site   # Homepage, return links, assets, Pages subpaths, focus styles
-npm run test:games  # All seven game suites, including Tilt Dodger simulation and control tests
+npm run test:games  # All four game suites, including Tilt Dodger simulation and control tests
 ```
 
-To test just one game, use `npm --prefix games/pong test` (replace `pong`
-with `frogger`, `space-invaders`, `asteroids`, `snake`, `gauntlet`, or `tilt-dodger`). Asteroids also retains
-its original `npm --prefix games/asteroids run check` command; Snake has
-`npm --prefix games/snake run check`.
+To test just one game, use `npm --prefix games/frogger test` (replace `frogger`
+with `space-invaders`, `asteroids`, or `tilt-dodger`). Asteroids also retains
+its original `npm --prefix games/asteroids run check` command.
 No framework, bundler, backend, or external test dependencies are needed.
 
 ## Layout and source projects
 
 | Game | Local entry point | Original source |
 | --- | --- | --- |
-| Pong | `games/pong/index.html` | [atangyyz/retro-pong](https://github.com/atangyyz/retro-pong) |
-| Frogger | `games/frogger/index.html` | [atangyyz/retro-frogger](https://github.com/atangyyz/retro-frogger) |
+| Tilt Dodger | `games/tilt-dodger/index.html` | Built for this arcade |
 | Space Invaders | `games/space-invaders/index.html` | [atangyyz/retro-space-invaders](https://github.com/atangyyz/retro-space-invaders) |
 | Asteroids | `games/asteroids/index.html` | [atangyyz/retro-asteroids](https://github.com/atangyyz/retro-asteroids) |
-| Snake | `games/snake/index.html` | Built for this arcade |
-| Gauntlet | `games/gauntlet/index.html` | Built for this arcade |
-| Tilt Dodger | `games/tilt-dodger/index.html` | Built for this arcade |
+| Frogger | `games/frogger/index.html` | [atangyyz/retro-frogger](https://github.com/atangyyz/retro-frogger) |
 
-The four original games were imported from the source projects' `main` branches
+The three remaining original games were imported from the source projects' `main` branches
 on 2026-10-05. Their folders retain the complete source snapshots, including READMEs,
 package metadata, styles, game logic, and tests. Only each game's HTML was
 adjusted to include the shared return link and its stylesheet; Asteroids'
@@ -55,35 +51,23 @@ existing brand/home link now also returns to the arcade homepage.
 The original repositories are unchanged. Original package license declarations
 are retained; importing these projects does not grant a new license.
 
-Snake is self-contained in `games/snake/`: `index.html` and `style.css` provide
-the page, `game.js` is the DOM-free grid simulation, `main.js` handles canvas,
-keyboard and on-screen controls, and `game.test.js` uses Node's built-in runner.
-Select **Start game**, steer with **arrow keys / WASD** or the direction buttons,
-and eat food for 10 points, growth, and increasing speed. Walls and your own body
-end the round; **Restart game** starts fresh. Use **P / Space** with the board
-focused or the **Pause / Resume** button to pause. Leaving the window also pauses;
-resuming is manual. Best score persists in browser storage when available.
-
-Gauntlet is self-contained in `games/gauntlet/`: explore with the arrow keys /
-WASD or direction buttons, attack with Space or the Attack button, collect
-treasure and potions, find the key, and reach the exit. Its grid-based engine
-and deterministic tests are independent of the other games.
-
-Tilt Dodger is self-contained in `games/tilt-dodger/`: tilt your device left or
-right to steer a spaceship, dodge falling asteroid rows, and collect stars.
-Tilt is the only steering input. Survival earns 10 points per second;
+Tilt Dodger is self-contained in `games/tilt-dodger/`: steer a spaceship, dodge
+falling asteroid rows, and collect stars. Touch-first devices (primary pointer
+is coarse) steer only by tilting in full view; laptops and desktops steer only
+with ← → or A / D in the normal page layout. The page tells players which
+controls apply before they start. Survival earns 10 points per second;
 each star adds 50. Asteroids accelerate and rows arrive more frequently, but
 each row leaves a two-lane gap that shifts by at most one lane, preserving a
 reachable escape route. Best scores persist locally when storage is available.
 Use the large Start, Pause / Resume, and Retry controls; leaving the page
 pauses the round and requires manual resume.
 
-Tilt steering requires a secure context (HTTPS or localhost), a supported
+On touch devices, tilt steering requires a secure context (HTTPS or localhost), a supported
 orientation sensor, and, on some phones, permission after tapping Start or Resume.
 Hold the phone comfortably during calibration; recalibrate after changing your
 grip. Rotating the screen pauses flight and recalibrates before manual resume.
-Denied permission or missing sensor readings prevent flight; there is no touch
-or keyboard steering fallback. Start expands the game to the viewport and requests
+Denied permission or missing sensor readings prevent flight; touch devices have
+no touch or keyboard steering fallback. In tilt mode, Start expands the game to the viewport and requests
 native fullscreen where supported. The portrait playfield scales without
 stretching or cropping, and Pause, Recalibrate, Retry, and Exit full view remain
 accessible. Exit full view returns to the normal page and pauses an active flight.

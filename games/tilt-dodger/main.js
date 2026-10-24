@@ -2,7 +2,7 @@ import {
   WIDTH, HEIGHT, SHIP_Y, SHIP_RADIUS,
   createGame, startGame, setTarget, togglePause, stepGame,
 } from './game.js';
-import { installControls, readBest, writeBest } from './controls.js';
+import { detectControlMode, installControls, readBest, writeBest } from './controls.js';
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -17,6 +17,10 @@ const overlayCopy = document.getElementById('overlay-copy');
 const status = document.getElementById('game-status');
 const controlStatus = document.getElementById('control-status');
 const arcade = document.querySelector('.arcade');
+const controlHint = document.getElementById('control-hint');
+const instructions = document.getElementById('instructions');
+const controlMode = detectControlMode(window);
+const tiltMode = controlMode === 'tilt';
 const game = createGame({ best: readBest(window) });
 const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 let lastStatus = '';
@@ -26,6 +30,7 @@ let pendingAction = null;
 let nativeFullscreen = false;
 
 function enterFlightView() {
+  if (!tiltMode) return;
   arcade.classList.add('flight-mode');
   document.body.classList.add('in-flight');
   if (!document.fullscreenElement && arcade.requestFullscreen) {
@@ -61,7 +66,7 @@ function begin() {
   if (pendingAction || (game.status !== 'ready' && game.status !== 'gameover')) return;
   pendingAction = 'start';
   syncUI();
-  controls.requestTilt();
+  controls.activate();
   if (pendingAction || game.status === 'playing') enterFlightView();
 }
 
@@ -70,7 +75,7 @@ function pauseGame(toggle = false) {
     if (pendingAction) return;
     pendingAction = 'resume';
     syncUI();
-    controls.requestTilt();
+    controls.activate();
     if (pendingAction || game.status === 'playing') enterFlightView();
   } else if (game.status === 'playing') {
     togglePause(game);
@@ -84,6 +89,7 @@ const controls = installControls({
   win: window, doc: document, canvas,
   recalibrateButton: document.getElementById('recalibrate'),
   width: WIDTH,
+  mode: controlMode,
   getX: () => game.x,
   isPlaying: () => game.status === 'playing',
   onTarget: x => setTarget(game, x),
@@ -98,6 +104,13 @@ const controls = installControls({
     if (game.status === 'ready' || game.status === 'gameover') leaveFlightView();
   },
 });
+document.body.classList.add(tiltMode ? 'tilt-controls' : 'keyboard-controls');
+controlHint.textContent = tiltMode
+  ? '📱 Motion controls · tilt your device to steer. Flight fills the screen.'
+  : '⌨️ Keyboard controls · use ← → or A / D to steer.';
+instructions.textContent = tiltMode
+  ? 'Tap Start, allow motion access, then tilt left or right to steer. Hold comfortably to center tilt; Recalibrate adjusts your grip. Exit full view returns here and pauses.'
+  : 'No motion sensor here, so steer with the keyboard: hold ← / → or A / D. Press Enter on the game area to start and P to pause.';
 start.addEventListener('click', begin);
 pause.addEventListener('click', () => pauseGame(true));
 
