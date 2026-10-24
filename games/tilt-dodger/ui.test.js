@@ -574,6 +574,39 @@ test('native fullscreen exit pauses and returns to the normal layout', async () 
   assert.ok(f.arcade.classList.contains('flight-mode'));
 });
 
+test('late fullscreen entry is exited after permission denial or user cancellation', async () => {
+  for (const cancel of ['denied', 'exit']) {
+    let enterFullscreen;
+    let exits = 0;
+    const f = mainFixture(({ win, doc, arcade }) => {
+      win.DeviceOrientationEvent.requestPermission = () => cancel === 'denied' ? 'denied' : 'granted';
+      arcade.requestFullscreen = () => new Promise(resolve => {
+        enterFullscreen = () => {
+          doc.fullscreenElement = arcade;
+          doc.emit('fullscreenchange');
+          resolve();
+        };
+      });
+      doc.exitFullscreen = () => {
+        exits++;
+        doc.fullscreenElement = null;
+        doc.emit('fullscreenchange');
+        return Promise.resolve();
+      };
+    });
+    f.elements.start.emit('click');
+    if (cancel === 'exit') f.elements['exit-flight'].emit('click');
+    await tick();
+    assert.equal(f.arcade.classList.contains('flight-mode'), false);
+    enterFullscreen();
+    await tick();
+    assert.equal(exits, 1);
+    assert.equal(f.doc.fullscreenElement, null);
+    assert.equal(f.arcade.classList.contains('flight-mode'), false);
+    assert.equal(f.game.status, 'ready');
+  }
+});
+
 test('exit while awaiting permission invalidates late grants and permits a fresh start', async () => {
   let resolve;
   const f = mainFixture(({ win }) => {

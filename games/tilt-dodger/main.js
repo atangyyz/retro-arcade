@@ -77,7 +77,6 @@ function pauseGame(toggle = false) {
     controls.reset();
     previousTime = null;
     syncUI();
-    if (game.status === 'playing') canvas.focus({ preventScroll: true });
   }
 }
 
@@ -112,7 +111,13 @@ function exitFlight() {
 }
 document.getElementById('exit-flight').addEventListener('click', exitFlight);
 document.addEventListener('fullscreenchange', () => {
-  if (document.fullscreenElement === arcade) nativeFullscreen = true;
+  if (document.fullscreenElement === arcade) {
+    if (!arcade.classList.contains('flight-mode')) {
+      leaveFlightView();
+      return;
+    }
+    nativeFullscreen = true;
+  }
   else if (nativeFullscreen) {
     nativeFullscreen = false;
     exitFlight();
@@ -127,13 +132,13 @@ function syncUI() {
     savedBest = game.best;
     writeBest(window, game.best);
   }
+  const uiStatus = pendingAction ? 'calibrating' : game.status;
+  if (lastStatus === uiStatus) return;
+  lastStatus = uiStatus;
   start.disabled = pendingAction !== null || game.status === 'playing' || game.status === 'paused';
   start.textContent = pendingAction === 'start' ? 'Waiting for tilt…' : game.status === 'gameover' ? 'Retry flight' : 'Start flight';
   pause.disabled = pendingAction !== null || game.status === 'ready' || game.status === 'gameover';
   pause.textContent = pendingAction === 'resume' ? 'Waiting for tilt…' : game.status === 'paused' ? 'Resume' : 'Pause';
-  const uiStatus = pendingAction ? 'calibrating' : game.status;
-  if (lastStatus === uiStatus) return;
-  lastStatus = uiStatus;
   overlay.hidden = game.status === 'playing';
   if (pendingAction) {
     overlayTitle.textContent = 'Hold steady.';

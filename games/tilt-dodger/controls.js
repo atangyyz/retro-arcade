@@ -88,7 +88,10 @@ export function installControls({
       stopTilt('Tilt requires HTTPS and a device with an orientation sensor.');
       return;
     }
-    if (doc.hidden) return;
+    if (doc.hidden) {
+      stopTilt('Tilt off while away. Tap Start or Resume to enable it again.');
+      return;
+    }
     const token = ++generation;
     pending = true;
     buttons();
