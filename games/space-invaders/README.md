@@ -5,13 +5,14 @@ No runtime dependencies, downloads, external assets, tracking, or build step.
 
 ## Play locally
 
-Serve the repository with any static HTTP server. For example, with Python 3:
+This game is part of Retro Arcade and is published with the rest of the site.
+Serve the repository root with any static HTTP server. For example, with Python 3:
 
 ```sh
 python3 -m http.server 8000
 ```
 
-Open **http://localhost:8000** and select **Start game**. Use an HTTP server
+Open **http://localhost:8000/games/space-invaders/** and select **Start game**. Use an HTTP server
 rather than opening `index.html` directly: browsers restrict JavaScript modules
 on `file://` URLs.
 
@@ -25,7 +26,17 @@ on `file://` URLs.
 | Restart | R |
 
 The visible Start/Pause/Resume and Restart buttons work with keyboard navigation.
-On phones and tablets, hold the on-screen movement and fire buttons together.
+
+Controls are chosen when the page loads, and the start screen says which apply:
+
+- **Phones and tablets** (coarse primary pointer): tilt left or right to move and
+  hold the on-screen Fire button. Start, Resume, and Restart ask for motion access
+  (HTTPS required), calibrate to how you are holding the device, and expand to
+  full view (best held sideways). Exit full view returns to the page and pauses;
+  rotating the device pauses and recalibrates on resume. If the sensor is
+  unavailable or access is denied, on-screen ◀ ▶ buttons appear instead.
+- **Laptops and desktops**: keyboard only, in the normal page layout.
+
 The game automatically pauses when the window loses focus or the tab is hidden;
 resume manually when ready.
 
@@ -37,20 +48,6 @@ Restart resets score, lives, and difficulty. Progress is not persisted.
 Instructions, statistics, and important status changes are available as text.
 Controls have visible focus indicators and ship flashing respects reduced-motion
 preferences. Gameplay is visual and is not a screen-reader-only experience.
-
-## Deploy to GitHub Pages
-
-1. Merge the game files into the repository's default branch.
-2. Go to **Settings → Pages → Build and deployment**.
-3. Select **Deploy from a branch**, select that branch and **/ (root)**, and save.
-4. Wait for deployment, then use the **Visit site** link in Pages settings.
-
-The expected project URL is **https://atangyyz.github.io/retro-space-invaders/**,
-but Pages settings is the source of truth for the published URL and deployment
-status. Pages availability for a private repository depends on your GitHub plan;
-if unavailable, use a supported plan or make the repository public if appropriate.
-All asset paths are relative, so deployment under a project subdirectory works.
-Any static host can serve these files unchanged; no npm installation is needed.
 
 ## Tests and structure
 
@@ -66,6 +63,9 @@ Tests use Node's built-in test runner; there are no packages to install.
 
 - `index.html` — accessible page, scoreboard, instructions, and controls.
 - `styles.css` — responsive arcade presentation.
-- `app.mjs` — canvas rendering, keyboard/pointer input, and browser lifecycle.
+- `app.mjs` — canvas rendering, input wiring, full view, and browser lifecycle.
+- `controls.mjs` — control-mode detection and tilt calibration.
 - `game.mjs` — browser-independent game simulation.
 - `tests/game.test.mjs` — focused deterministic game-logic tests.
+- `tests/controls.test.mjs` — tilt and control-mode tests.
+- `tests/app.test.mjs` — browser wiring tests with a fake DOM.

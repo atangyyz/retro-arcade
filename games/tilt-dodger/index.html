@@ -13,7 +13,7 @@
 <body>
   <main class="arcade">
     <header class="heading">
-      <div><p class="eyebrow">RETRO ARCADE / 07</p><h1>Tilt <span>Dodger</span></h1></div>
+      <div><p class="eyebrow">RETRO ARCADE / 01</p><h1>Tilt <span>Dodger</span></h1></div>
       <span class="badge" aria-hidden="true">✦ SURVIVE</span>
     </header>
     <section class="scoreboard" aria-label="Scores">
@@ -23,13 +23,14 @@
     </section>
     <div class="flight-deck">
       <canvas id="game" width="360" height="540" tabindex="0" aria-label="Tilt Dodger game area" aria-describedby="instructions game-status">
-        Dodge meteors and collect stars. Use the Start button, allow motion access, then tilt your device to steer.
+        Dodge meteors and collect stars. On phones and tablets, tilt your device to steer; on computers, use the arrow keys or A and D.
       </canvas>
       <div id="overlay" class="overlay">
         <div class="overlay-card">
           <span class="overlay-icon" aria-hidden="true">✦</span>
           <h2 id="overlay-title">Find your flow.</h2>
           <p id="overlay-copy">Dodge meteors. Chase stars.<br>Stay in the sky.</p>
+          <p id="control-hint" class="control-hint"></p>
         </div>
       </div>
     </div>
@@ -42,8 +43,8 @@
       <button id="exit-flight" class="exit-flight" type="button">Exit full view</button>
     </div>
     <p id="game-status" class="status" role="status" aria-live="polite" aria-atomic="true">Ready to fly.</p>
-    <p id="control-status" class="control-status" role="status" aria-live="polite" aria-atomic="true">Tilt-only steering · motion access required.</p>
-    <p id="instructions" class="instructions">Tap Start, allow motion access, then tilt left or right to steer.<br>Hold comfortably to center tilt. Recalibrate to adjust your grip. P pauses.<br>Flight fills the screen; Exit full view returns here and pauses.</p>
+    <p id="control-status" class="control-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    <p id="instructions" class="instructions">Phones and tablets steer by tilting in full view. Computers steer with ← → or A / D.</p>
     <a class="arcade-navigation" href="../../index.html">← Back to Arcade</a>
   </main>
 </body>

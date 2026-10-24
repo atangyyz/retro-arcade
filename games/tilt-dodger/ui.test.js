@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import * as engine from './game.js';
-import { orientationAxis, readBest, writeBest, installControls } from './controls.js';
+import { orientationAxis, readBest, writeBest, installControls, detectControlMode } from './controls.js';
 
 class Target {
   constructor(tagName = 'DIV') {
@@ -41,6 +41,7 @@ function browser() {
   const ids = [
     'game', 'score', 'stars', 'best', 'start', 'pause', 'overlay',
     'overlay-title', 'overlay-copy', 'game-status', 'control-status', 'recalibrate', 'exit-flight',
+    'control-hint', 'instructions',
   ];
   const elements = Object.fromEntries(ids.map(id => [
     id, new Target(['start', 'pause', 'recalibrate', 'exit-flight'].includes(id) ? 'BUTTON' : 'DIV'),
@@ -69,7 +70,8 @@ function browser() {
   win.DeviceOrientationEvent = {};
   win.screen = { orientation: new Target() };
   win.screen.orientation.angle = 0;
-  win.matchMedia = () => ({ matches: false });
+  win.coarsePointer = true;
+  win.matchMedia = query => ({ matches: query === '(pointer: coarse)' && win.coarsePointer });
   const storage = new Map();
   win.storageWrites = 0;
   win.localStorage = {
@@ -92,7 +94,7 @@ function browser() {
   return { win, doc, elements, canvas, captures, storage, arcade };
 }
 
-function controlsFixture(configure = () => {}) {
+function controlsFixture(configure = () => {}, mode = 'tilt') {
   const env = browser();
   configure(env);
   const targets = [];
@@ -105,7 +107,7 @@ function controlsFixture(configure = () => {}) {
   let playing = true;
   const controls = installControls({
     ...env, recalibrateButton: env.elements.recalibrate,
-    width: 360, getX: () => x, isPlaying: () => playing,
+    width: 360, mode, getX: () => x, isPlaying: () => playing,
     onTarget: value => targets.push(value), onPause: toggle => pauses.push(toggle),
     onStart: () => starts++, onStatus: value => statuses.push(value),
     onReady: () => ready++, onUnavailable: () => unavailable++,
@@ -121,7 +123,7 @@ function controlsFixture(configure = () => {}) {
 }
 
 const tick = () => Promise.resolve();
-const requestTilt = f => f.controls.requestTilt();
+const requestTilt = f => f.controls.activate();
 const orient = (f, beta, gamma) => f.win.emit('deviceorientation', { beta, gamma });
 const pointer = (f, type, pointerId, clientX = 110) => f.canvas.emit(type, { pointerId, clientX, button: 0 });
 const approximately = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} ≠ ${expected}`);
@@ -339,7 +341,7 @@ function mainFixture(configure = () => {}) {
   const source = readFileSync(new URL('./main.js', import.meta.url), 'utf8')
     .replace(/import[\s\S]*?from ['"][^'"]+['"];\n/g, '');
   const context = vm.createContext({
-    ...engine, installControls, readBest, writeBest,
+    ...engine, installControls, detectControlMode, readBest, writeBest,
     window: env.win, document: env.doc, console,
   });
   vm.runInContext(`${source}\nglobalThis.testGame = game;`, context, { filename: 'main.js' });
@@ -641,4 +643,92 @@ test('rotation pauses flight, recalibrates, and never auto-resumes', async () =>
   f.win.expireTimers();
   assert.equal(f.game.status, 'paused');
   assert.match(f.elements['control-status'].textContent, /No tilt readings/);
+});
+
+test('control mode is tilt for touch-first devices and keyboard otherwise', () => {
+  const { win } = browser();
+  assert.equal(detectControlMode(win), 'tilt');
+  win.coarsePointer = false;
+  assert.equal(detectControlMode(win), 'keyboard');
+  assert.equal(detectControlMode({}), 'keyboard');
+});
+
+test('keyboard mode steers with arrows and A/D, never asks for motion, and releases on blur', () => {
+  let permission = 0;
+  const f = controlsFixture(({ win }) => {
+    win.DeviceOrientationEvent.requestPermission = () => { permission++; return 'granted'; };
+  }, 'keyboard');
+  assert.match(f.statuses.at(-1), /Keyboard steering/);
+  f.controls.activate();
+  assert.equal(f.ready, 1);
+  assert.equal(permission, 0);
+  assert.equal(f.elements.recalibrate.disabled, true);
+  f.controls.update(0.05);
+  assert.equal(f.targets.at(-1), 180);
+  for (const [key, expected] of [['ArrowLeft', 0], ['a', 0], ['ArrowRight', 360], ['D', 360]]) {
+    const event = f.win.emit('keydown', { key, target: f.elements.pause });
+    assert.ok(event.defaultPrevented);
+    f.controls.update(0.05);
+    assert.equal(f.targets.at(-1), expected);
+    f.win.emit('keyup', { key });
+  }
+  f.win.emit('keydown', { key: 'ArrowLeft', target: f.canvas });
+  f.win.emit('keydown', { key: 'ArrowRight', target: f.canvas });
+  f.controls.update(0.05);
+  assert.equal(f.targets.at(-1), 180);
+  f.win.emit('keyup', { key: 'ArrowRight' });
+  f.win.emit('blur');
+  f.setX(120);
+  f.controls.update(0.05);
+  assert.equal(f.targets.at(-1), 120);
+  assert.deepEqual(f.pauses, [undefined]);
+  orient(f, 35, 40);
+  f.win.screen.orientation.emit('change');
+  f.controls.update(0.05);
+  assert.equal(f.targets.at(-1), 120);
+  f.win.emit('keydown', { key: 'ArrowLeft', target: new Target('INPUT') });
+  f.controls.update(0.05);
+  assert.equal(f.targets.at(-1), 120);
+  f.controls.destroy();
+});
+
+test('laptops start keyboard flights immediately in the normal layout and see the controls up front', () => {
+  const requests = [];
+  const f = mainFixture(({ win, arcade }) => {
+    win.coarsePointer = false;
+    win.DeviceOrientationEvent.requestPermission = () => { requests.push('permission'); return 'granted'; };
+    arcade.requestFullscreen = () => { requests.push('fullscreen'); return Promise.resolve(); };
+  });
+  assert.ok(f.doc.body.classList.contains('keyboard-controls'));
+  assert.match(f.elements['control-hint'].textContent, /Keyboard controls/);
+  assert.match(f.elements.instructions.textContent, /A \/ D/);
+  assert.match(f.elements['control-status'].textContent, /Keyboard steering/);
+  f.elements.start.emit('click');
+  assert.equal(f.game.status, 'playing');
+  assert.deepEqual(requests, []);
+  assert.equal(f.arcade.classList.contains('flight-mode'), false);
+  assert.equal(f.doc.body.classList.contains('in-flight'), false);
+  assert.equal(f.doc.activeElement, f.canvas);
+  f.win.emit('keydown', { key: 'ArrowRight', target: f.canvas });
+  f.win.frame(0);
+  f.win.frame(16);
+  f.win.frame(32);
+  assert.ok(f.game.x > 180);
+  f.win.emit('keyup', { key: 'ArrowRight' });
+  f.win.emit('keydown', { key: 'p', target: f.canvas });
+  assert.equal(f.game.status, 'paused');
+  f.win.emit('keydown', { key: 'p', target: f.canvas });
+  assert.equal(f.game.status, 'playing');
+  f.game.status = 'gameover';
+  f.canvas.focus();
+  f.win.emit('keydown', { key: 'Enter', target: f.canvas });
+  assert.equal(f.game.status, 'playing');
+});
+
+test('touch devices are told about tilt and full view before starting', () => {
+  const f = mainFixture();
+  assert.ok(f.doc.body.classList.contains('tilt-controls'));
+  assert.match(f.elements['control-hint'].textContent, /tilt your device/);
+  assert.match(f.elements['control-hint'].textContent, /fills the screen/);
+  assert.match(f.elements.instructions.textContent, /allow motion access/);
 });

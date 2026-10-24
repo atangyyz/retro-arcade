@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
-const games = ['pong', 'frogger', 'space-invaders', 'asteroids', 'snake', 'gauntlet', 'tilt-dodger'];
+const games = ['frogger', 'space-invaders', 'asteroids', 'tilt-dodger'];
 const read = path => readFile(new URL(path, root), 'utf8');
 
 test('homepage offers exactly one same-tab link to each playable game', async () => {
@@ -75,9 +75,9 @@ test('homepage theme toggle defaults to dark and supports a saved light theme', 
   assert.match(script, /toggle\.addEventListener\('click'/);
 });
 
-test('homepage copy reflects all seven games and includes inline game previews', async () => {
+test('homepage copy reflects all four games and includes inline game previews', async () => {
   const html = await read('index.html');
-  assert.match(html, /Seven arcade games/);
+  assert.match(html, /Four arcade games/);
   assert.match(html, /<title>Retro Arcade/);
   assert.match(html, /<h1 id="welcome">Retro<br><span>Arcade\.<\/span><\/h1>/);
   assert.doesNotMatch(html, /\bgift\b/i);
@@ -85,22 +85,13 @@ test('homepage copy reflects all seven games and includes inline game previews',
   assert.match(html, /BUILT FOR ARCADE FANS/);
   assert.doesNotMatch(html, /fencer/i);
   assert.doesNotMatch(html, /fencing/i);
-  assert.match(html, /07 GAMES \/ FREE PLAY/);
-  assert.match(html, /SEVEN GAMES\./);
-  assert.doesNotMatch(html, /five (?:arcade classics|games)/i);
+  assert.match(html, /04 GAMES \/ FREE PLAY/);
+  assert.match(html, /FOUR GAMES\./);
+  assert.doesNotMatch(html, /(?:seven|five) (?:arcade classics|games)/i);
+  assert.doesNotMatch(html, /pong|snake|gauntlet/i);
   const grid = html.match(/<div class="game-grid">([\s\S]*?)<\/section>/);
   assert.ok(grid);
   assert.equal([...grid[1].matchAll(/class="game-card /g)].length, games.length);
-  const card = grid[1].match(/<a class="game-card snake"[\s\S]*?<\/a>/);
-  assert.ok(card);
-  assert.match(card[0], /<svg viewBox=/);
-  assert.match(card[0], /id="snake-description"/);
-  assert.match(card[0], /id="snake-controls"/);
-  const gauntlet = grid[1].match(/<a class="game-card gauntlet"[\s\S]*?<\/a>/);
-  assert.ok(gauntlet);
-  assert.match(gauntlet[0], /<svg viewBox=/);
-  assert.match(gauntlet[0], /id="gauntlet-description"/);
-  assert.match(gauntlet[0], /id="gauntlet-controls"/);
   const dodger = grid[1].match(/<a class="game-card tilt-dodger"[\s\S]*?<\/a>/);
   assert.ok(dodger);
   assert.match(dodger[0], /<svg viewBox=/);
@@ -119,41 +110,3 @@ test('homepage no longer ships mascot characters', async () => {
   }
 });
 
-test('Snake exposes instructions, live status, touch controls and visible focus', async () => {
-  const html = await read('games/snake/index.html');
-  const css = await read('games/snake/style.css');
-  const main = await read('games/snake/main.js');
-  assert.match(html, /<canvas[^>]*tabindex="0"[^>]*aria-describedby="instructions status"/);
-  assert.match(html, /id="status"[^>]*role="status"[^>]*aria-live="polite"/);
-  assert.match(html, /id="instructions"/);
-  assert.match(html, /id="start"[^>]*>Start game/);
-  assert.match(html, /id="pause"[^>]*disabled/);
-  for (const direction of ['up', 'down', 'left', 'right']) {
-    assert.match(html, new RegExp(`data-direction="${direction}" aria-label="Move ${direction}"`));
-  }
-  assert.match(css, /button:focus-visible/);
-  assert.match(css, /canvas:focus-visible/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  const page = new URL('games/snake/main.js', 'https://example.com/retro-arcade/');
-  for (const [, reference] of main.matchAll(/from '([^']+)'/g)) {
-    assert.ok(reference.startsWith('./'));
-    const resolved = new URL(reference, page);
-    assert.ok(resolved.pathname.startsWith('/retro-arcade/games/snake/'));
-    await access(new URL(resolved.pathname.slice('/retro-arcade/'.length), root));
-  }
-});
-
-test('Gauntlet exposes keyboard instructions, status and touch controls', async () => {
-  const html = await read('games/gauntlet/index.html');
-  const css = await read('games/gauntlet/style.css');
-  assert.match(html, /<canvas[^>]*tabindex="0"[^>]*aria-describedby="instructions status"/);
-  assert.match(html, /id="status"[^>]*role="status"[^>]*aria-live="polite"/);
-  assert.match(html, /id="start"[^>]*>Start run/);
-  assert.match(html, /id="attack"[^>]*>Attack/);
-  for (const direction of ['up', 'down', 'left', 'right']) {
-    assert.match(html, new RegExp(`data-direction="${direction}" aria-label="Move ${direction}"`));
-  }
-  assert.match(css, /button:focus-visible/);
-  assert.match(css, /canvas:focus-visible/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-});

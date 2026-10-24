@@ -4,6 +4,13 @@ export function orientationAxis(event, angle = 0) {
   return event.gamma * Math.cos(radians) + event.beta * Math.sin(radians);
 }
 
+// Phones and tablets report a coarse primary pointer; laptops and desktops report a fine one.
+export function detectControlMode(win) {
+  return win.matchMedia?.('(pointer: coarse)').matches ? 'tilt' : 'keyboard';
+}
+
+const STEER_KEYS = { arrowleft: -1, a: -1, arrowright: 1, d: 1 };
+
 export function readBest(win) {
   try {
     const best = Number(win.localStorage.getItem('tilt-dodger-best'));
@@ -22,7 +29,7 @@ export function writeBest(win, best) {
 }
 
 export function installControls({
-  win, doc, canvas, recalibrateButton, width,
+  win, doc, canvas, recalibrateButton, width, mode = 'tilt',
   getX, isPlaying, onTarget, onPause, onStart, onStatus, onReady, onUnavailable,
 }) {
   const removers = [];
@@ -34,7 +41,9 @@ export function installControls({
   let baseline = null;
   let originX = width / 2;
   let smoothed = 0;
+  const keyboard = mode === 'keyboard';
   const available = win.isSecureContext === true && !!win.DeviceOrientationEvent;
+  const held = new Set();
   function listen(target, type, handler, options) {
     target.addEventListener(type, handler, options);
     removers.push(() => target.removeEventListener(type, handler, options));
@@ -78,7 +87,12 @@ export function installControls({
       onReady();
     }
   }
-  function requestTilt() {
+  function activate() {
+    if (keyboard) {
+      onStatus('Keyboard steering · ← → or A / D.');
+      onReady();
+      return;
+    }
     if (enabled && baseline !== null) {
       onReady();
       return;
@@ -128,13 +142,19 @@ export function installControls({
     });
   }
   function suspend() {
+    held.clear();
     onPause();
     if (enabled || pending) stopTilt('Tilt off while away. Tap Start or Resume to enable it again.');
   }
   listen(win, 'keydown', event => {
     const target = event.target;
-    if (target && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(target.tagName)) return;
     const key = event.key.toLowerCase();
+    if (keyboard && key in STEER_KEYS && !(target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName))) {
+      held.add(key);
+      event.preventDefault();
+      return;
+    }
+    if (target && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(target.tagName)) return;
     if (key === 'p') {
       if (!event.repeat) onPause(true);
       event.preventDefault();
@@ -145,6 +165,7 @@ export function installControls({
       }
     }
   });
+  listen(win, 'keyup', event => { held.delete(event.key.toLowerCase()); });
   listen(win, 'blur', suspend);
   listen(doc, 'visibilitychange', () => { if (doc.hidden) suspend(); });
   const rotate = () => {
@@ -158,20 +179,30 @@ export function installControls({
       timeout = win.setTimeout(() => stopTilt('No tilt readings. Use a device with motion sensors and try again.'), 3500);
     }
   };
-  listen(win, 'orientationchange', rotate);
-  if (win.screen?.orientation?.addEventListener) listen(win.screen.orientation, 'change', rotate);
+  if (!keyboard) {
+    listen(win, 'orientationchange', rotate);
+    if (win.screen?.orientation?.addEventListener) listen(win.screen.orientation, 'change', rotate);
+  }
   listen(recalibrateButton, 'click', () => {
     if (!enabled) return;
     calibrate();
     onStatus(axis === null ? 'Hold comfortably · waiting for tilt.' : 'Tilt centered at your hold angle.');
   });
   buttons();
-  if (!available) onStatus('Tilt requires HTTPS and a device with an orientation sensor.');
+  if (keyboard) onStatus('Keyboard steering · ← → or A / D.');
+  else if (!available) onStatus('Tilt requires HTTPS and a device with an orientation sensor.');
   return {
-    requestTilt,
+    mode: keyboard ? 'keyboard' : 'tilt',
+    activate,
     cancel() { stopTilt(); },
     update(dt) {
       if (!isPlaying() || !Number.isFinite(dt) || dt <= 0) return;
+      if (keyboard) {
+        let direction = 0;
+        for (const key of held) direction += STEER_KEYS[key];
+        onTarget(direction < 0 ? 0 : direction > 0 ? width : getX());
+        return;
+      }
       if (enabled && axis !== null && baseline !== null) {
         const delta = ((axis - baseline + 540) % 360) - 180;
         const desired = Math.abs(delta) <= 2 ? 0 : Math.sign(delta) * (Math.abs(delta) - 2);

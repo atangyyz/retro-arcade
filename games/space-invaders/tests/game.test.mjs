@@ -232,3 +232,18 @@ test('paused updates freeze movement, projectiles, cooldowns and wave timers', (
   assert.equal(game.status, 'playing');
   assert.equal(game.waveDelay, 0);
 });
+
+test('analog targetX steers the ship center at capped speed and overrides buttons', () => {
+  const game = playing();
+  game.update(0.1, { targetX: 600, left: true });
+  assert.ok(Math.abs(game.player.x - 414) < 1e-8);
+  advance(game, 2, { targetX: 600 });
+  assert.ok(Math.abs(game.player.x + game.player.w / 2 - 600) < 1e-8);
+  advance(game, 3, { targetX: -500 });
+  assert.equal(game.player.x, 0);
+  advance(game, 3, { targetX: 5000 });
+  assert.equal(game.player.x, WIDTH - game.player.w);
+  const x = game.player.x;
+  game.update(0.1, { targetX: NaN, left: true });
+  assert.ok(game.player.x < x);
+});
