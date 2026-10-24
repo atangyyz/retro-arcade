@@ -1,5 +1,5 @@
 import {
-  WIDTH, HEIGHT, SHIP_Y, SHIP_RADIUS, MOVE_SPEED,
+  WIDTH, HEIGHT, SHIP_Y, SHIP_RADIUS,
   createGame, startGame, setTarget, togglePause, stepGame,
 } from './game.js';
 import { installControls, readBest, writeBest } from './controls.js';
@@ -16,23 +16,63 @@ const overlayTitle = document.getElementById('overlay-title');
 const overlayCopy = document.getElementById('overlay-copy');
 const status = document.getElementById('game-status');
 const controlStatus = document.getElementById('control-status');
+const arcade = document.querySelector('.arcade');
 const game = createGame({ best: readBest(window) });
 const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 let lastStatus = '';
 let savedBest = game.best;
 let previousTime = null;
+let pendingAction = null;
+let nativeFullscreen = false;
 
-function begin() {
-  if (game.status !== 'ready' && game.status !== 'gameover') return;
-  startGame(game);
+function enterFlightView() {
+  arcade.classList.add('flight-mode');
+  document.body.classList.add('in-flight');
+  if (!document.fullscreenElement && arcade.requestFullscreen) {
+    try {
+      Promise.resolve(arcade.requestFullscreen()).catch(() => {});
+    } catch {
+      // The viewport layout still works when fullscreen is unavailable.
+    }
+  }
+}
+
+function leaveFlightView() {
+  arcade.classList.remove('flight-mode');
+  document.body.classList.remove('in-flight');
+  if (document.fullscreenElement === arcade && document.exitFullscreen) {
+    try { Promise.resolve(document.exitFullscreen()).catch(() => {}); } catch { /* Keep the viewport fallback usable. */ }
+  }
+}
+
+function flyWhenReady() {
+  const action = pendingAction;
+  pendingAction = null;
+  if (action === 'start') startGame(game);
+  else if (action === 'resume' && game.status === 'paused') togglePause(game);
+  else return;
   controls.reset();
   previousTime = null;
   syncUI();
   canvas.focus({ preventScroll: true });
 }
 
+function begin() {
+  if (pendingAction || (game.status !== 'ready' && game.status !== 'gameover')) return;
+  pendingAction = 'start';
+  syncUI();
+  controls.requestTilt();
+  if (pendingAction || game.status === 'playing') enterFlightView();
+}
+
 function pauseGame(toggle = false) {
-  if (game.status === 'playing' || (toggle && game.status === 'paused')) {
+  if (toggle && game.status === 'paused') {
+    if (pendingAction) return;
+    pendingAction = 'resume';
+    syncUI();
+    controls.requestTilt();
+    if (pendingAction || game.status === 'playing') enterFlightView();
+  } else if (game.status === 'playing') {
     togglePause(game);
     controls.reset();
     previousTime = null;
@@ -43,18 +83,41 @@ function pauseGame(toggle = false) {
 
 const controls = installControls({
   win: window, doc: document, canvas,
-  tiltButton: document.getElementById('tilt'),
   recalibrateButton: document.getElementById('recalibrate'),
-  width: WIDTH, moveSpeed: MOVE_SPEED,
+  width: WIDTH,
   getX: () => game.x,
   isPlaying: () => game.status === 'playing',
   onTarget: x => setTarget(game, x),
   onPause: pauseGame,
   onStart: begin,
   onStatus: message => { controlStatus.textContent = message; },
+  onReady: flyWhenReady,
+  onUnavailable: () => {
+    pendingAction = null;
+    pauseGame();
+    syncUI();
+    if (game.status === 'ready' || game.status === 'gameover') leaveFlightView();
+  },
 });
 start.addEventListener('click', begin);
 pause.addEventListener('click', () => pauseGame(true));
+
+function exitFlight() {
+  pendingAction = null;
+  controls.cancel();
+  pauseGame();
+  leaveFlightView();
+  syncUI();
+  (game.status === 'paused' ? pause : start).focus({ preventScroll: true });
+}
+document.getElementById('exit-flight').addEventListener('click', exitFlight);
+document.addEventListener('fullscreenchange', () => {
+  if (document.fullscreenElement === arcade) nativeFullscreen = true;
+  else if (nativeFullscreen) {
+    nativeFullscreen = false;
+    exitFlight();
+  }
+});
 
 function syncUI() {
   score.textContent = String(Math.floor(game.score));
@@ -64,13 +127,20 @@ function syncUI() {
     savedBest = game.best;
     writeBest(window, game.best);
   }
-  if (lastStatus === game.status) return;
-  lastStatus = game.status;
+  start.disabled = pendingAction !== null || game.status === 'playing' || game.status === 'paused';
+  start.textContent = pendingAction === 'start' ? 'Waiting for tilt…' : game.status === 'gameover' ? 'Retry flight' : 'Start flight';
+  pause.disabled = pendingAction !== null || game.status === 'ready' || game.status === 'gameover';
+  pause.textContent = pendingAction === 'resume' ? 'Waiting for tilt…' : game.status === 'paused' ? 'Resume' : 'Pause';
+  const uiStatus = pendingAction ? 'calibrating' : game.status;
+  if (lastStatus === uiStatus) return;
+  lastStatus = uiStatus;
   overlay.hidden = game.status === 'playing';
-  start.disabled = game.status === 'playing' || game.status === 'paused';
-  start.textContent = game.status === 'gameover' ? 'Retry flight' : 'Start flight';
-  pause.disabled = game.status === 'ready' || game.status === 'gameover';
-  pause.textContent = game.status === 'paused' ? 'Resume' : 'Pause';
+  if (pendingAction) {
+    overlayTitle.textContent = 'Hold steady.';
+    overlayCopy.textContent = 'Allow motion access and hold your device comfortably to center tilt.';
+    status.textContent = 'Waiting for tilt · flight starts only when your sensor is ready.';
+    return;
+  }
   if (game.status === 'ready') {
     overlayTitle.textContent = 'Find your flow.';
     overlayCopy.textContent = 'Dodge meteors. Chase stars. Stay in the sky.';

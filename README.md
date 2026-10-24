@@ -69,21 +69,25 @@ WASD or direction buttons, attack with Space or the Attack button, collect
 treasure and potions, find the key, and reach the exit. Its grid-based engine
 and deterministic tests are independent of the other games.
 
-Tilt Dodger is self-contained in `games/tilt-dodger/`: drag anywhere on its
-portrait canvas to steer a spaceship, dodge falling asteroid rows, and collect
-stars. Arrow keys / A and D also steer. Survival earns 10 points per second;
+Tilt Dodger is self-contained in `games/tilt-dodger/`: tilt your device left or
+right to steer a spaceship, dodge falling asteroid rows, and collect stars.
+Tilt is the only steering input. Survival earns 10 points per second;
 each star adds 50. Asteroids accelerate and rows arrive more frequently, but
 each row leaves a two-lane gap that shifts by at most one lane, preserving a
 reachable escape route. Best scores persist locally when storage is available.
 Use the large Start, Pause / Resume, and Retry controls; leaving the page
 pauses the round and requires manual resume.
 
-Touch steering is always available and requires no sensor permission. Optional
-tilt steering requires a secure context (HTTPS or localhost), a supported
-orientation sensor, and, on some phones, permission after tapping Enable tilt.
+Tilt steering requires a secure context (HTTPS or localhost), a supported
+orientation sensor, and, on some phones, permission after tapping Start or Resume.
 Hold the phone comfortably during calibration; recalibrate after changing your
-grip or rotating the screen. Denied permission or missing sensor readings leave
-touch play available. Real sensor behavior should also be checked on a phone.
+grip. Rotating the screen pauses flight and recalibrates before manual resume.
+Denied permission or missing sensor readings prevent flight; there is no touch
+or keyboard steering fallback. Start expands the game to the viewport and requests
+native fullscreen where supported. The portrait playfield scales without
+stretching or cropping, and Pause, Recalibrate, Retry, and Exit full view remain
+accessible. Exit full view returns to the normal page and pauses an active flight.
+Real sensor behavior and fullscreen permissions should also be checked on a phone.
 The DOM-free simulation tests include a 90-second safe-route run.
 
 The homepage lives in `index.html`; `assets/arcade.css` styles it and
