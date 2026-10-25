@@ -22,11 +22,8 @@ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const keys = new Set();
 const pointers = new Map();
 const controlKeys = { ArrowLeft: "left", KeyA: "left", ArrowRight: "right", KeyD: "right", ArrowUp: "thrust", KeyW: "thrust", Space: "fire" };
-const joystickElement = document.querySelector("#joystick");
-const joystickKnob = document.querySelector("#joystick-knob");
-const JOYSTICK_DEAD_ZONE = .25;
-const JOYSTICK_THRUST_ZONE = .7;
-const joystick = { pointerId: null, aim: null, thrust: false };
+const rocker = document.querySelector("#rotate-rocker");
+const rockerState = { pointerId: null, direction: null };
 const stars = Array.from({ length: 100 }, () => ({ x: Math.random() * WORLD_WIDTH, y: Math.random() * WORLD_HEIGHT, radius: Math.random() < .85 ? 1 : 1.7, alpha: .15 + Math.random() * .5 }));
 let highScore = 0;
 let storageAvailable = true;
@@ -49,30 +46,22 @@ function announce(message) {
 function clearInput() {
   keys.clear();
   pointers.clear();
-  releaseJoystick();
+  releaseRocker();
   document.querySelectorAll("[data-control]").forEach(button => button.classList.remove("active"));
 }
 
-function releaseJoystick() {
-  joystick.pointerId = null;
-  joystick.aim = null;
-  joystick.thrust = false;
-  joystickElement.classList.remove("active", "thrusting");
-  joystickKnob.style.transform = "";
+function releaseRocker() {
+  rockerState.pointerId = null;
+  rockerState.direction = null;
+  rocker.classList.remove("rotating-left", "rotating-right");
 }
 
-function moveJoystick(event) {
-  const rect = joystickElement.getBoundingClientRect();
-  const radius = rect.width / 2;
-  const dx = event.clientX - (rect.left + radius);
-  const dy = event.clientY - (rect.top + radius);
-  const reach = Math.min(Math.hypot(dx, dy) / radius, 1);
-  const travel = reach * (radius - joystickKnob.offsetWidth / 2);
-  const angle = Math.atan2(dy, dx);
-  joystickKnob.style.transform = `translate(${Math.cos(angle) * travel}px, ${Math.sin(angle) * travel}px)`;
-  joystick.aim = reach >= JOYSTICK_DEAD_ZONE ? angle : null;
-  joystick.thrust = reach >= JOYSTICK_THRUST_ZONE;
-  joystickElement.classList.toggle("thrusting", joystick.thrust);
+// One thumb on the rocker: the side it rests on sets the turn direction, so sliding across switches it.
+function moveRocker(event) {
+  const rect = rocker.getBoundingClientRect();
+  rockerState.direction = event.clientX < rect.left + rect.width / 2 ? "left" : "right";
+  rocker.classList.toggle("rotating-left", rockerState.direction === "left");
+  rocker.classList.toggle("rotating-right", rockerState.direction === "right");
 }
 
 function enableAudio() {
@@ -173,24 +162,23 @@ for (const button of document.querySelectorAll("[data-control]")) {
   button.addEventListener("contextmenu", event => event.preventDefault());
 }
 
-joystickElement.addEventListener("pointerdown", event => {
-  if (game.state !== "playing" || joystick.pointerId !== null) return;
+rocker.addEventListener("pointerdown", event => {
+  if (game.state !== "playing" || rockerState.pointerId !== null) return;
   event.preventDefault();
   enableAudio();
-  joystickElement.setPointerCapture(event.pointerId);
-  joystick.pointerId = event.pointerId;
-  joystickElement.classList.add("active");
-  moveJoystick(event);
+  rocker.setPointerCapture(event.pointerId);
+  rockerState.pointerId = event.pointerId;
+  moveRocker(event);
 });
-joystickElement.addEventListener("pointermove", event => {
-  if (event.pointerId === joystick.pointerId) moveJoystick(event);
+rocker.addEventListener("pointermove", event => {
+  if (event.pointerId === rockerState.pointerId) moveRocker(event);
 });
 for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) {
-  joystickElement.addEventListener(type, event => {
-    if (event.pointerId === joystick.pointerId) releaseJoystick();
+  rocker.addEventListener(type, event => {
+    if (event.pointerId === rockerState.pointerId) releaseRocker();
   });
 }
-joystickElement.addEventListener("contextmenu", event => event.preventDefault());
+rocker.addEventListener("contextmenu", event => event.preventDefault());
 
 function suspend() {
   clearInput();
@@ -342,8 +330,7 @@ function frame(timestamp) {
   const input = {};
   for (const key of keys) input[controlKeys[key]] = true;
   for (const control of pointers.values()) input[control] = true;
-  if (joystick.aim !== null) input.aim = joystick.aim;
-  if (joystick.thrust) input.thrust = true;
+  if (rockerState.direction) input[rockerState.direction] = true;
   while (accumulator >= 1 / 120) {
     if (game.state !== "paused") bannerTime = Math.max(0, bannerTime - 1 / 120);
     game.update(1 / 120, input);

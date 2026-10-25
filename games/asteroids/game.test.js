@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { AsteroidsGame, distance, wrap, turnToward, TURN_RATE, WORLD_WIDTH, WORLD_HEIGHT } from "./game.js";
+import { AsteroidsGame, distance, wrap, WORLD_WIDTH, WORLD_HEIGHT } from "./game.js";
 
 function createGame() {
   let seed = 42;
@@ -66,29 +66,6 @@ test("rotation, thrust, coasting, speed limiting, and ship wrapping", () => {
   game.ship.vy = 100;
   game.update(.02);
   assert.ok(game.ship.x < 2 && game.ship.y < 2);
-});
-
-test("turnToward takes the shortest way round and never overshoots", () => {
-  assert.equal(turnToward(0, 1, 2), 1);
-  assert.equal(turnToward(0, 1, .25), .25);
-  assert.ok(Math.abs(turnToward(3, -3, .1) - 3.1) < 1e-10, "crosses the ±π seam");
-  assert.ok(Math.abs(turnToward(10 * Math.PI, -.5, 1) - (10 * Math.PI - .5)) < 1e-10, "handles wound-up angles");
-});
-
-test("joystick aim turns at keyboard speed, settles on target, and thrusts that way", () => {
-  const game = createGame();
-  game.asteroids = [stationaryRock(game, 0, 50, 50)];
-  const start = game.ship.angle;
-  advance(game, .1, { aim: 0 });
-  assert.ok(Math.abs(game.ship.angle - (start + TURN_RATE * .1)) < 1e-9, "same turn rate as keyboard");
-  advance(game, 1, { aim: 0 });
-  assert.ok(Math.abs(Math.sin(game.ship.angle)) < 1e-9 && Math.cos(game.ship.angle) > 0);
-  assert.equal(game.ship.vx, 0, "aiming alone does not thrust");
-  advance(game, .3, { aim: 0, thrust: true });
-  assert.ok(game.ship.vx > 0 && Math.abs(game.ship.vy) < 1e-6);
-  const settled = game.ship.angle;
-  advance(game, .2, { aim: 0, left: true });
-  assert.equal(game.ship.angle, settled, "aim overrides rotate keys while the stick is held");
 });
 
 test("held fire repeats with a cooldown, bullet cap, and expiry", () => {

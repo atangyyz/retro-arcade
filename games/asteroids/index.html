@@ -61,12 +61,14 @@
       </section>
 
       <div class="touch-controls" aria-label="Touch flight controls">
-        <div id="joystick" class="joystick" role="img" aria-label="Flight stick: drag to aim, push to the outer ring to thrust">
-          <div class="joystick-thrust-ring" aria-hidden="true"></div>
-          <div id="joystick-knob" class="joystick-knob" aria-hidden="true"></div>
-          <span class="joystick-label" aria-hidden="true">AIM · PUSH TO THRUST</span>
+        <div id="rotate-rocker" class="rocker" role="group" aria-label="Rotate: hold the left or right side, slide across to switch direction">
+          <span class="rocker-side rocker-left" aria-hidden="true">↶</span>
+          <span class="rocker-side rocker-right" aria-hidden="true">↷</span>
         </div>
-        <button type="button" data-control="fire" class="touch-fire" aria-label="Fire lasers">FIRE ◇</button>
+        <div class="touch-stack">
+          <button type="button" data-control="thrust" class="touch-thrust" aria-label="Thrust forward">THRUST ↑</button>
+          <button type="button" data-control="fire" class="touch-fire" aria-label="Fire lasers">FIRE ◇</button>
+        </div>
       </div>
 
       <section id="instructions" class="instructions" aria-label="How to play">
@@ -76,7 +78,7 @@
         <div class="control"><div><kbd>SPACE</kbd></div><span>Fire · hold to repeat</span></div>
         <div class="control"><div><kbd>ESC</kbd><span class="key-alternative"> / P</span></div><span>Pause</span></div>
       </section>
-      <p class="game-tip">The universe wraps around. Big rocks split into smaller ones. Clear a wave to advance.<br>Three lives, no brakes — release thrust to coast. On mobile, drag the flight stick to aim, push it to the outer ring to thrust, and hold FIRE.</p>
+      <p class="game-tip">The universe wraps around. Big rocks split into smaller ones. Clear a wave to advance.<br>Three lives, no brakes — release thrust to coast. On mobile, hold either side of the rotate rocker (slide across to switch), and use THRUST and FIRE on the right.</p>
       <footer class="page-footer"><span>BUILT FOR THE LOVE OF THE GAME</span><span>NO DOWNLOADS. JUST ONE MORE ROUND.</span></footer>
       <p id="announcer" class="sr-only" role="status" aria-live="polite"></p>
     </main>
