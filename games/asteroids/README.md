@@ -31,8 +31,10 @@ with deployment from the repository root).
 | Fire lasers | Space (hold for repeated fire) |
 | Pause / resume | Escape or P, or the on-screen buttons |
 
-On mobile and tablets, **hold the touch buttons** to rotate, thrust, and fire.
-Multiple buttons can be held at once. Release thrust to coast; there are no brakes.
+On mobile and tablets, use the **flight stick**: drag it to point the ship, and
+push it past the dashed outer ring to thrust. Small movements near the centre
+are ignored, so you can aim without thrusting. The ship turns toward the stick
+at the same speed as keyboard rotation. Hold **FIRE** with your other thumb. Release thrust to coast; there are no brakes.
 The game pauses when the browser loses focus or moves to the background. Resume
 explicitly when you return.
 

@@ -8,6 +8,13 @@ export function wrap(value, limit) {
   return ((value % limit) + limit) % limit;
 }
 
+export const TURN_RATE = 4.5;
+
+export function turnToward(angle, target, maxStep) {
+  const delta = wrap(target - angle + Math.PI, TAU) - Math.PI;
+  return Math.abs(delta) <= maxStep ? angle + delta : angle + Math.sign(delta) * maxStep;
+}
+
 export function distance(a, b, width = WORLD_WIDTH, height = WORLD_HEIGHT) {
   const dx = Math.abs(wrap(a.x - b.x, width));
   const dy = Math.abs(wrap(a.y - b.y, height));
@@ -176,7 +183,9 @@ export class AsteroidsGame {
     if (ship.active) {
       ship.invulnerable = Math.max(0, ship.invulnerable - dt);
       ship.cooldown = Math.max(0, ship.cooldown - dt);
-      ship.angle += ((input.right ? 1 : 0) - (input.left ? 1 : 0)) * 4.5 * dt;
+      // Joystick aim turns toward a heading at the same rate as keyboard rotation.
+      if (Number.isFinite(input.aim)) ship.angle = turnToward(ship.angle, input.aim, TURN_RATE * dt);
+      else ship.angle += ((input.right ? 1 : 0) - (input.left ? 1 : 0)) * TURN_RATE * dt;
       ship.thrusting = Boolean(input.thrust);
       if (input.thrust) {
         ship.vx += Math.cos(ship.angle) * 270 * dt;
