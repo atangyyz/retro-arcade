@@ -20,10 +20,17 @@ const flightStatus = document.querySelector("#flight-status");
 const hint = document.querySelector("#overlay-hint");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const keys = new Set();
-const pointers = new Map();
 const controlKeys = { ArrowLeft: "left", KeyA: "left", ArrowRight: "right", KeyD: "right", ArrowUp: "thrust", KeyW: "thrust", Space: "fire" };
 const rocker = document.querySelector("#rotate-rocker");
 const rockerState = { pointerId: null, direction: null };
+const ROCKER_NEUTRAL = .08;
+const actionPad = document.querySelector("#action-pad");
+const padPointers = new Map();
+// Fractions of pad height: above THRUST_EDGE is thrust only, below FIRE_EDGE is fire only, between presses both.
+const PAD_THRUST_EDGE = .34;
+const PAD_FIRE_EDGE = .5;
+const autoFireButton = document.querySelector("#autofire-button");
+let autoFire = false;
 const stars = Array.from({ length: 100 }, () => ({ x: Math.random() * WORLD_WIDTH, y: Math.random() * WORLD_HEIGHT, radius: Math.random() < .85 ? 1 : 1.7, alpha: .15 + Math.random() * .5 }));
 let highScore = 0;
 let storageAvailable = true;
@@ -45,9 +52,9 @@ function announce(message) {
 
 function clearInput() {
   keys.clear();
-  pointers.clear();
   releaseRocker();
-  document.querySelectorAll("[data-control]").forEach(button => button.classList.remove("active"));
+  padPointers.clear();
+  syncActionPad();
 }
 
 function releaseRocker() {
@@ -57,11 +64,25 @@ function releaseRocker() {
 }
 
 // One thumb on the rocker: the side it rests on sets the turn direction, so sliding across switches it.
+// A narrow centre strip is neutral so a resting thumb doesn't flicker between directions.
 function moveRocker(event) {
   const rect = rocker.getBoundingClientRect();
-  rockerState.direction = event.clientX < rect.left + rect.width / 2 ? "left" : "right";
+  const offset = (event.clientX - rect.left) / rect.width - .5;
+  rockerState.direction = Math.abs(offset) < ROCKER_NEUTRAL ? null : offset < 0 ? "left" : "right";
   rocker.classList.toggle("rotating-left", rockerState.direction === "left");
   rocker.classList.toggle("rotating-right", rockerState.direction === "right");
+}
+
+function padControls(event) {
+  const rect = actionPad.getBoundingClientRect();
+  const y = (event.clientY - rect.top) / rect.height;
+  return { thrust: y < PAD_FIRE_EDGE, fire: y >= PAD_THRUST_EDGE };
+}
+
+function syncActionPad() {
+  const held = [...padPointers.values()];
+  actionPad.classList.toggle("thrusting", held.some(controls => controls.thrust));
+  actionPad.classList.toggle("firing", autoFire || held.some(controls => controls.fire));
 }
 
 function enableAudio() {
@@ -143,24 +164,32 @@ window.addEventListener("keydown", event => {
 });
 window.addEventListener("keyup", event => keys.delete(event.code));
 
-for (const button of document.querySelectorAll("[data-control]")) {
-  button.addEventListener("pointerdown", event => {
-    if (game.state !== "playing") return;
-    event.preventDefault();
-    enableAudio();
-    button.setPointerCapture(event.pointerId);
-    pointers.set(event.pointerId, button.dataset.control);
-    button.classList.add("active");
+actionPad.addEventListener("pointerdown", event => {
+  if (game.state !== "playing") return;
+  event.preventDefault();
+  enableAudio();
+  actionPad.setPointerCapture(event.pointerId);
+  padPointers.set(event.pointerId, padControls(event));
+  syncActionPad();
+});
+actionPad.addEventListener("pointermove", event => {
+  if (!padPointers.has(event.pointerId)) return;
+  padPointers.set(event.pointerId, padControls(event));
+  syncActionPad();
+});
+for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) {
+  actionPad.addEventListener(type, event => {
+    if (padPointers.delete(event.pointerId)) syncActionPad();
   });
-  const release = event => {
-    pointers.delete(event.pointerId);
-    if (![...pointers.values()].includes(button.dataset.control)) button.classList.remove("active");
-  };
-  button.addEventListener("pointerup", release);
-  button.addEventListener("pointercancel", release);
-  button.addEventListener("lostpointercapture", release);
-  button.addEventListener("contextmenu", event => event.preventDefault());
 }
+actionPad.addEventListener("contextmenu", event => event.preventDefault());
+autoFireButton.addEventListener("click", () => {
+  autoFire = !autoFire;
+  autoFireButton.setAttribute("aria-pressed", String(autoFire));
+  autoFireButton.textContent = autoFire ? "AUTO-FIRE ON" : "AUTO-FIRE OFF";
+  syncActionPad();
+  if (game.state === "playing") canvas.focus({ preventScroll: true });
+});
 
 rocker.addEventListener("pointerdown", event => {
   if (game.state !== "playing" || rockerState.pointerId !== null) return;
@@ -329,7 +358,11 @@ function frame(timestamp) {
   accumulator += elapsed;
   const input = {};
   for (const key of keys) input[controlKeys[key]] = true;
-  for (const control of pointers.values()) input[control] = true;
+  for (const controls of padPointers.values()) {
+    if (controls.thrust) input.thrust = true;
+    if (controls.fire) input.fire = true;
+  }
+  if (autoFire) input.fire = true;
   if (rockerState.direction) input[rockerState.direction] = true;
   while (accumulator >= 1 / 120) {
     if (game.state !== "paused") bannerTime = Math.max(0, bannerTime - 1 / 120);

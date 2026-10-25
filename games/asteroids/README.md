@@ -32,8 +32,11 @@ with deployment from the repository root).
 | Pause / resume | Escape or P, or the on-screen buttons |
 
 On mobile and tablets, hold either side of the **rotate rocker** (left thumb) to
-turn; slide across it to switch direction without lifting. **THRUST** (top) and
-**FIRE** (bottom) sit under your right thumb. Multiple controls can be held at once. Release thrust to coast; there are no brakes.
+turn; slide across it to switch direction without lifting. The small centre strip
+is neutral. **THRUST** (top) and **FIRE** (bottom, larger) share one pad under
+your right thumb: rest on the dashed seam to thrust and fire together. Turn on
+**AUTO-FIRE** in the cabinet footer to fire continuously. Multiple controls can be
+held at once. Release thrust to coast; there are no brakes.
 The game pauses when the browser loses focus or moves to the background. Resume
 explicitly when you return.
 
