@@ -63,6 +63,15 @@ test('shared styles retain visible focus and reduced-motion support', async () =
   assert.match(homepage, /transition:\s*none/);
 });
 
+test('Tilt Dodger gives keyboard players a larger, aligned portrait playfield', async () => {
+  const css = await read('games/tilt-dodger/style.css');
+  assert.match(css, /\.keyboard-controls \.arcade\s*\{\s*width:\s*min\(100% - 24px, 480px, 46\.667svh\);/);
+  assert.match(css, /\.keyboard-controls \.flight-deck\s*\{\s*width:\s*100%;/);
+  assert.match(css, /\.flight-deck\s*\{[^}]*aspect-ratio:\s*2 \/ 3;/);
+  assert.match(css, /\.flight-mode \.flight-deck\s*\{[^}]*aspect-ratio:\s*auto;/);
+  assert.match(css, /\.flight-mode canvas\s*\{[^}]*object-fit:\s*contain;/);
+});
+
 test('homepage theme toggle defaults to dark and supports a saved light theme', async () => {
   const html = await read('index.html');
   const css = await read('assets/arcade.css');
@@ -109,4 +118,3 @@ test('homepage no longer ships mascot characters', async () => {
     assert.doesNotMatch(source, /princess|plum/i);
   }
 });
-

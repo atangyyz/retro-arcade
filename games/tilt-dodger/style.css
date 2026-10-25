@@ -46,6 +46,8 @@ h2 { font-size: 27px; margin: 0 0 10px; letter-spacing: -1px; }
 .overlay .control-hint { margin-top: 14px; padding: 8px 10px; border: 1px solid #35566b; border-radius: 9px; background: #10182ee6; color: #77f4da; font-size: 12px; line-height: 1.4; }
 .control-hint:empty { display: none; }
 .keyboard-controls .steering-controls { display: none; }
+.keyboard-controls .arcade { width: min(100% - 24px, 480px, 46.667svh); }
+.keyboard-controls .flight-deck { width: 100%; }
 button { min-height: 44px; border: 1px solid #3c4b6e; border-radius: 9px; background: #19233e; color: #edf4ff; font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1.2; cursor: pointer; padding: 10px 12px; -webkit-tap-highlight-color: transparent; }
 button:hover:not(:disabled) { background: #263655; }
 button:focus-visible { outline: 3px solid #ffda81; outline-offset: 3px; }

@@ -54,7 +54,9 @@ are retained; importing these projects does not grant a new license.
 Tilt Dodger is self-contained in `games/tilt-dodger/`: steer a spaceship, dodge
 falling asteroid rows, and collect stars. Touch-first devices (primary pointer
 is coarse) steer only by tilting in full view; laptops and desktops steer only
-with ← → or A / D in the normal page layout. The page tells players which
+with ← → or A / D in the normal page layout. The keyboard playfield scales to
+70% of the viewport height (up to 480px wide), keeping its portrait proportions
+and matching the width of the scoreboard and controls. The page tells players which
 controls apply before they start. Survival earns 10 points per second;
 each star adds 50. Asteroids accelerate and rows arrive more frequently, but
 each row leaves a two-lane gap that shifts by at most one lane, preserving a
