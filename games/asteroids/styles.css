@@ -68,14 +68,14 @@ kbd { display: inline-block; border: 1px solid #3d4d5f; border-bottom-width: 2px
 .game-tip { color: var(--muted); font-size: 10px; line-height: 1.9; text-align: center; margin: 19px 0 35px; }
 .page-footer { display: flex; justify-content: space-between; color: #8192a6; font-size: 8px; letter-spacing: 1px; }
 .touch-controls { display: none; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; padding-bottom: 20px; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-.joystick { --size: 148px; position: relative; flex: none; width: var(--size); height: var(--size); border-radius: 50%; border: 1px solid #3c5366; background: radial-gradient(circle, #142131 0 40%, #0f1a27 41%); touch-action: none; }
-.joystick-thrust-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed #6c573e; opacity: .7; pointer-events: none; }
-.joystick.thrusting .joystick-thrust-ring { border-style: solid; border-color: var(--amber); opacity: 1; box-shadow: 0 0 18px #f6c78540; }
-.joystick-knob { position: absolute; left: 50%; top: 50%; width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 50%; border: 1px solid var(--mint); background: #1d3a37; box-shadow: 0 0 14px #a8f5ce30; pointer-events: none; }
-.joystick.active .joystick-knob { background: #284a43; }
-.joystick-label { position: absolute; left: 50%; bottom: -18px; transform: translateX(-50%); white-space: nowrap; font-size: 8px; letter-spacing: 1px; color: var(--muted); pointer-events: none; }
-.touch-controls .touch-fire { width: 108px; height: 108px; border-radius: 50%; border: 1px solid #6c573e; background: #142131; color: var(--amber); font-size: 13px; touch-action: none; }
-.touch-controls .touch-fire.active { background: #3a3122; border-color: var(--amber); }
+.rotate-rocker { display: flex; flex: 1; max-width: 220px; height: 112px; overflow: hidden; border: 1px solid #3c5366; border-radius: 12px; background: #0f1a27; touch-action: none; }
+.rotate-rocker button { flex: 1; border: 0; background: transparent; color: var(--mint); font-size: 28px; touch-action: none; }
+.rotate-rocker button + button { border-left: 1px solid #3c5366; }
+.rotate-rocker button.active { background: #1d3a37; }
+.touch-action-stack { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.touch-controls .touch-thrust, .touch-controls .touch-fire { width: 86px; height: 48px; border: 1px solid #6c573e; border-radius: 8px; background: #142131; color: var(--amber); font-size: 10px; letter-spacing: .5px; touch-action: none; }
+.touch-controls .touch-fire { border-color: #3c5366; color: var(--mint); }
+.touch-controls [data-control].active { background: #3a3122; border-color: var(--amber); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 @media (min-width: 701px) {
   canvas { height: min(55vh, 630px); object-fit: contain; }
@@ -110,7 +110,7 @@ kbd { display: inline-block; border: 1px solid #3d4d5f; border-bottom-width: 2px
   .ship-emblem, .overlay-hint { display: none; }
 }
 @media (max-width: 380px) {
-  .joystick { --size: 128px; }
-  .touch-controls .touch-fire { width: 92px; height: 92px; font-size: 11px; }
+  .rotate-rocker { height: 100px; }
+  .touch-controls .touch-thrust, .touch-controls .touch-fire { width: 76px; }
 }
 @media (prefers-reduced-motion: reduce) { .screen-vignette { background: none; } }
